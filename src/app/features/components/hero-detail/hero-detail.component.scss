@@ -1,0 +1,13 @@
+.go-back-button {
+  background-color: var(--background-color);
+
+  &:hover {
+    background-color: var(--hover-color);
+  }
+
+  &:disabled {
+    background-color: var(--background-disabled-color);
+    color: var(--background-disabled-color);
+    cursor: auto;
+  }
+}

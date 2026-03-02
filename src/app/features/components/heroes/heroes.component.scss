@@ -1,0 +1,19 @@
+.hero {
+  &:hover {
+    background: var(--hover-color);
+    color: var(--hover-text-color);
+  }
+}
+
+.hero-link {
+  color: var(--text-color);
+  background: var(--background-disabled-color);
+}
+
+.badge {
+  color: var(--hover-text-color);
+  background: var(--hover-color);
+  line-height: 1em;
+  height: 1.8em;
+  margin-right: .8em;
+}

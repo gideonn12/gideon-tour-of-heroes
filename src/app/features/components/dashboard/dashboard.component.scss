@@ -1,0 +1,8 @@
+.route {
+  background-color: var(--route-background-color);
+  color: var(--hover-text-color);
+}
+
+.route:hover {
+  background-color: var(--hover-color);
+}

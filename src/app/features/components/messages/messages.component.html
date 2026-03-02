@@ -1,0 +1,10 @@
+<div class="pt-6">
+  @if(messages.length) {
+    <p-card header="Messages" class="messages-title text-2xl"></p-card>
+    <p-button class="clear border-round-lg flex flex-column justify-content-center w-14rem"
+              (click)="this.clearMessages()" label="Clear messages"/>
+    @for (message of messages; track $index) {
+      <div class="pt-2">{{message}}</div>
+    }
+  }
+</div>

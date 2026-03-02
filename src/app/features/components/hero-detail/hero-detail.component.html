@@ -1,0 +1,12 @@
+<div class="details-container pt-6">
+@if (hero()) {
+  <p-card class="text-2xl" header="{{ hero()!.name | uppercase }} Details">
+    <p>id: {{ hero()!.id }}</p>
+    <p>
+      <label class="hero-name" for="hero-name">Hero name:</label>
+      <input class="text-2xl" id="hero-name" [(ngModel)]="hero()!.name" placeholder="name" />
+    </p>
+  </p-card>
+}
+<p-button class="go-back-button p-4 border-round-xl" (click)="goBack()" label="Go Back" />
+</div>

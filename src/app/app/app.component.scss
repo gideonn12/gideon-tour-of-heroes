@@ -1,0 +1,13 @@
+.routes {
+  background-color: var(--background-color);
+  color: var(--text-color);
+
+  &:hover {
+    color: var(--hover-text-color);
+    background-color: var(--hover-color);
+  }
+
+  &:active {
+    background-color: var(--background-active-color);
+  }
+}

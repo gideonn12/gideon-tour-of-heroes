@@ -7,9 +7,9 @@ import { heroReducer } from '../store/hero/reducer';
 import { provideEffects } from '@ngrx/effects';
 import { HeroEffects } from '../store/hero/effects';
 import { TeamsEffects } from '../store/teams/effects';
-// import { EquipmentEffects } from '../store/equipment/effects';
+import { EquipmentEffects } from '../store/equipment/effects';
 import { teamsReducer } from '../store/teams/reducer';
-// import { equipmentReducer } from '../store/equipment/reducer';
+import { equipmentReducer } from '../store/equipment/reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,8 +19,8 @@ export const appConfig: ApplicationConfig = {
     provideStore({
       hero: heroReducer,
       teams: teamsReducer,
-      // equipments: equipmentReducer,
+      equipment: equipmentReducer,
     }),
-    provideEffects(HeroEffects, TeamsEffects),
+    provideEffects(HeroEffects, TeamsEffects, EquipmentEffects),
   ],
 };

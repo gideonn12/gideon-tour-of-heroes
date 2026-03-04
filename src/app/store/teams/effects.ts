@@ -9,8 +9,10 @@ export class TeamsEffects {
   logLoadTeams$ = createEffect(() =>
       this.actions$.pipe(
         ofType(loadTeams),
-        tap(() => console.log('Loading Teams ...')),
-        tap(() => console.log('Teams loading completed')),
+        tap(() => {
+          console.log('Loading Teams ...');
+          console.log('Teams loading completed');
+        }),
       ),
     { dispatch: false },
   );

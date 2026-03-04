@@ -10,8 +10,10 @@ export class EquipmentEffects {
   logLoadEquipment$ = createEffect(()=>
       this.actions$.pipe(
         ofType(loadEquipment),
-        tap(() => console.log("Loading equipments ....")),
-        tap(() => console.log("Equipments loading completed")),
+        tap(() => {
+          console.log("Loading equipments ....");
+          console.log("Equipments loading completed");
+        }),
       ),
     { dispatch: false }
   );

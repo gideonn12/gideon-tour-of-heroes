@@ -3,7 +3,7 @@ import { HeroesComponent } from '../features/components/heroes/heroes.component'
 import { DashboardComponent } from '../features/components/dashboard/dashboard.component';
 import { HeroDetailComponent } from '../features/components/hero-detail/hero-detail.component';
 import { TeamsComponent } from '../features/components/teams/teams.component';
-// import { EquipmentComponent } from '../features/components/equipment/equipment.component';
+import { EquipmentComponent } from '../features/components/equipment/equipment.component';
 
 export enum appRoutes {
   HEROES = 'heroes',
@@ -19,5 +19,5 @@ export const routes: Routes = [
   { path: '', redirectTo: appRoutes.DASHBOARD, pathMatch: 'full' },
   { path: `${appRoutes.DETAIL}/:id`, component: HeroDetailComponent },
   { path: appRoutes.TEAMS, component: TeamsComponent, title: 'Teams' },
-  // { path: appRoutes.EQUIPMENT, component: EquipmentComponent, title: 'Equipment' },
+  { path: appRoutes.EQUIPMENT, component: EquipmentComponent, title: 'Equipment' },
 ];

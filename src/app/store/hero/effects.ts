@@ -11,8 +11,10 @@ export class HeroEffects {
     () =>
       this.actions$.pipe(
         ofType(loadHeroes),
-        tap(() => console.log('Loading heroes ...')),
-        tap(() => console.log('Heroes loading completed')),
+        tap(() => {
+          console.log('Loading heroes ...');
+          console.log('Heroes loading completed');
+        }),
       ),
     { dispatch: false },
   );

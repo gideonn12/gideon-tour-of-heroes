@@ -1,5 +1,5 @@
-export type HeroStatus = 'Active' | 'Inactive' | 'Removed' | 'Suspended';
-
+export const HERO_STATUSES = ['Active', 'Inactive', 'Removed', 'Suspended'];
+export type HeroStatus = typeof HERO_STATUSES[number];
 export const statusColorMap: Record<HeroStatus, string> = {
   'Active': '#4CAF50',
   'Inactive': '#878776',
@@ -13,4 +13,5 @@ export interface Hero {
   status: HeroStatus;
   teamId: number;
   equipmentIds: number[];
+  maxWeight: number;
 }

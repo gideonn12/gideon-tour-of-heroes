@@ -7,6 +7,7 @@ export const INITIAL_HEROES: Hero[] = [
     status: 'Removed',
     teamId: 1,
     equipmentIds: [1, 3],
+    maxWeight: 10,
   },
   {
     id: 13,
@@ -14,6 +15,7 @@ export const INITIAL_HEROES: Hero[] = [
     status: 'Active',
     teamId: 2,
     equipmentIds: [2, 5],
+    maxWeight: 5,
   },
   {
     id: 14,
@@ -21,6 +23,7 @@ export const INITIAL_HEROES: Hero[] = [
     status: 'Active',
     teamId: 3,
     equipmentIds: [4, 6],
+    maxWeight: 4,
   },
   {
     id: 15,
@@ -28,6 +31,7 @@ export const INITIAL_HEROES: Hero[] = [
     status: 'Inactive',
     teamId: 4,
     equipmentIds: [1, 2],
+    maxWeight: 3,
   },
   {
     id: 16,
@@ -35,6 +39,7 @@ export const INITIAL_HEROES: Hero[] = [
     status: 'Active',
     teamId: 5,
     equipmentIds: [3, 4],
+    maxWeight: 6,
   },
   {
     id: 17,
@@ -42,6 +47,7 @@ export const INITIAL_HEROES: Hero[] = [
     status: 'Active',
     teamId: 4,
     equipmentIds: [5, 6],
+    maxWeight: 8,
   },
   {
     id: 18,
@@ -49,6 +55,7 @@ export const INITIAL_HEROES: Hero[] = [
     status: 'Active',
     teamId: 5,
     equipmentIds: [1, 3],
+    maxWeight: 7,
   },
   {
     id: 19,
@@ -56,6 +63,7 @@ export const INITIAL_HEROES: Hero[] = [
     status: 'Suspended',
     teamId: 2,
     equipmentIds: [2, 4],
+    maxWeight: 9,
   },
   {
     id: 20,
@@ -63,6 +71,7 @@ export const INITIAL_HEROES: Hero[] = [
     status: 'Active',
     teamId: 6,
     equipmentIds: [1, 5, 6],
+    maxWeight: 12,
   },
   {
     id: 1,
@@ -70,6 +79,7 @@ export const INITIAL_HEROES: Hero[] = [
     status: 'Active',
     teamId: 1,
     equipmentIds: [1, 2, 3],
+    maxWeight: 7,
   },
 ];
 

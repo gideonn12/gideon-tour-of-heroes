@@ -1,11 +1,12 @@
 <h2>My Heroes</h2>
-<div class="max-w-22rem">
-  <p-list-box [options]="heroes()" optionValue="id" (onChange)="onItemChange($event)">
+<div class="max-w-28rem">
+  <p-list-box [options]="heroesWithTeams()" optionValue="id" (onChange)="onItemChange($event)">
     <ng-template let-item pTemplate="item" class="hero-link">
       <div class="hero text-2xl cursor-pointer w-full flex align-items-center">
         <span class="badge flex justify-content-center align-items-center text-3xl w-3rem border-round flex-shrink-0">{{ item.id }}</span>
         <span class="flex-row justify-content-center white-space-nowrap">{{ item.name }}</span>
         <span class="m-2" [ngStyle]="{ 'background-color': getStatusColor(item.status) }">{{ item.status }}</span>
+        <span class="m-2" [ngStyle]="{ 'background-color': item.teamColor }">{{ item.teamName }}</span>
       </div>
     </ng-template>
   </p-list-box>

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, } from "@angular/core";
 import { FormsModule } from '@angular/forms';
 import { Hero, statusColorMap, HeroStatus } from '../../models/hero/hero';
 import { HeroService } from '../../services/hero.service';
@@ -10,6 +10,9 @@ import { Store } from '@ngrx/store';
 import { selectAllHeroes } from '../../../store/hero/selector';
 import { loadHeroes } from '../../../store/hero/actions';
 import { NgStyle } from "@angular/common";
+import { loadTeams } from "../../../store/teams/actions";
+import { selectAllTeams } from "../../../store/teams/selector";
+import { Team } from "../../models/team/team";
 
 @Component({
   selector: 'app-heroes',
@@ -19,13 +22,16 @@ import { NgStyle } from "@angular/common";
   styleUrls: ['./heroes.component.scss'],
 })
 export class HeroesComponent implements OnInit {
-  heroes: WritableSignal<Hero[]> = signal<Hero[]>([]);
+  heroes = signal<Hero[]>([]);
+  teams = signal<Team[]>([]);
   private store: Store<any> = inject(Store);
   private router: Router = inject(Router);
 
   ngOnInit(): void {
     this.store.dispatch(loadHeroes());
-    this.store.select(selectAllHeroes).subscribe((heroes) => this.heroes.set(heroes));
+    this.store.dispatch(loadTeams());
+    this.store.select(selectAllHeroes).subscribe((heroes: Hero[]) => this.heroes.set(heroes));
+    this.store.select(selectAllTeams).subscribe((teams: Team[]) => this.teams.set(teams));
   }
 
   onItemChange(event: any): void {
@@ -35,4 +41,13 @@ export class HeroesComponent implements OnInit {
   getStatusColor(status: HeroStatus): string {
     return statusColorMap[status];
   }
+
+  heroesWithTeams = computed(() => {
+    const allTeams = this.teams();
+    return this.heroes().map(hero => ({
+      ...hero,
+      teamName: allTeams.find(team => team.id === hero.teamId)?.name,
+      teamColor: allTeams.find(team => team.id === hero.teamId)?.color
+    }));
+  });
 }

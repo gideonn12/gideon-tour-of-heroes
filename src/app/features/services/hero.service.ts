@@ -5,7 +5,12 @@ import { Observable } from 'rxjs';
 import { MessageService } from './message.service';
 import { Store } from '@ngrx/store';
 import { selectAllHeroes } from '../../store/hero/selector';
-import { loadHeroes, updateHero } from "../../store/hero/actions";
+import {
+  deleteHero,
+  loadHeroes,
+  resetHero,
+  updateHero,
+} from "../../store/hero/actions";
 
 @Injectable()
 export class HeroService {
@@ -29,5 +34,13 @@ export class HeroService {
 
   updateHero(hero: Hero): void {
     this.store.dispatch(updateHero({ hero }));
+  }
+
+  deleteHero(id: number): void {
+    this.store.dispatch(deleteHero({ id }));
+  }
+
+  resetHero(id: number): void {
+    this.store.dispatch(resetHero({ id }));
   }
 }

@@ -6,21 +6,16 @@ import { appRoutes } from '../../../app/app.routes';
 import { Listbox } from 'primeng/listbox';
 import { PrimeTemplate } from 'primeng/api';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { selectAllHeroes } from '../../../store/hero/selector';
-import { loadHeroes } from '../../../store/hero/actions';
 import { NgStyle } from "@angular/common";
-import { loadTeams } from "../../../store/teams/actions";
-import { selectAllTeams } from "../../../store/teams/selector";
 import { Team } from "../../models/team/team";
 import { Equipment } from "../../models/equipment/equipment";
-import { loadEquipment } from "../../../store/equipment/actions";
-import { selectAllEquipments } from "../../../store/equipment/selector";
+import { EquipmentService } from "../../services/equipment.service";
+import { TeamsService } from "../../services/teams.service";
 
 @Component({
   selector: 'app-heroes',
   imports: [FormsModule, Listbox, PrimeTemplate, NgStyle],
-  providers: [HeroService],
+  providers: [HeroService, TeamsService, EquipmentService],
   templateUrl: './heroes.component.html',
   styleUrls: ['./heroes.component.scss'],
 })
@@ -28,16 +23,15 @@ export class HeroesComponent implements OnInit {
   heroes = signal<Hero[]>([]);
   teams = signal<Team[]>([]);
   equipments = signal<Equipment[]>([]);
-  private store: Store<any> = inject(Store);
   private router: Router = inject(Router);
+  private heroService: HeroService = inject(HeroService);
+  private equipmentService: EquipmentService = inject(EquipmentService);
+  private teamsService: TeamsService = inject(TeamsService);
 
   ngOnInit(): void {
-    this.store.dispatch(loadHeroes());
-    this.store.dispatch(loadTeams());
-    this.store.dispatch(loadEquipment());
-    this.store.select(selectAllHeroes).subscribe((heroes: Hero[]) => this.heroes.set(heroes));
-    this.store.select(selectAllTeams).subscribe((teams: Team[]) => this.teams.set(teams));
-    this.store.select(selectAllEquipments).subscribe((equipments: Equipment[]) => this.equipments.set(equipments));
+    this.heroService.getHeroes().subscribe((heroes: Hero[]) => this.heroes.set(heroes));
+    this.teamsService.getTeams().subscribe((teams: Team[]) => this.teams.set(teams));
+    this.equipmentService.getEquipment().subscribe((equipments: Equipment[]) => this.equipments.set(equipments));
   }
 
   onItemChange(event: any): void {

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { MessageService } from './message.service';
 import { Store } from '@ngrx/store';
 import { selectAllHeroes } from '../../store/hero/selector';
-import { updateHero } from '../../store/hero/actions';
+import { loadHeroes, updateHero } from "../../store/hero/actions";
 
 @Injectable()
 export class HeroService {
@@ -14,6 +14,7 @@ export class HeroService {
 
   getHeroes(): Observable<Hero[]> {
     this.sendMessage();
+    this.store.dispatch(loadHeroes());
     return this.store.select(selectAllHeroes);
   }
 
@@ -23,9 +24,7 @@ export class HeroService {
 
   getHero(id: number): Observable<Hero> {
     this.messageService.add(`HeroService: fetched hero id=${id}`);
-    return this.store
-      .select(selectAllHeroes)
-      .pipe(map((heroes: Hero[]) => heroes.find((hero: Hero) => hero.id === id)!));
+    return this.store.select(selectAllHeroes).pipe(map((heroes: Hero[]) => heroes.find((hero: Hero) => hero.id === id)!));
   }
 
   updateHero(hero: Hero): void {

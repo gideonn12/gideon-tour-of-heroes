@@ -1,4 +1,4 @@
-import { Equipment } from '../../features/models/equipment/equipment';
+import { Equipment } from '../models/equipment/equipment';
 
 export const INITIAL_EQUIPMENT: Equipment[] = [
   {

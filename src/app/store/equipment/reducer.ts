@@ -1,7 +1,7 @@
 import { Equipment } from "../../features/models/equipment/equipment";
 import { createReducer, on } from "@ngrx/store";
 import { loadEquipment } from "./actions";
-import { INITIAL_EQUIPMENT } from "./mock-equipment";
+import { INITIAL_EQUIPMENT } from "../../features/mocks/mock-equipment";
 
 export interface EquipmentState {
   equipments: Equipment[];

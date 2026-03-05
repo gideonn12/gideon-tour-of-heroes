@@ -5,6 +5,7 @@
       <div class="hero text-2xl cursor-pointer w-full flex align-items-center">
         <span class="badge flex justify-content-center align-items-center text-3xl w-3rem border-round flex-shrink-0">{{ item.id }}</span>
         <span class="flex-row justify-content-center white-space-nowrap">{{ item.name }}</span>
+        <span class="m-2" [ngStyle]="{ 'background-color': getStatusColor(item.status) }">{{ item.status }}</span>
       </div>
     </ng-template>
   </p-list-box>

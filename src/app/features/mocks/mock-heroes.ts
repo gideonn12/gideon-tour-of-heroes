@@ -4,7 +4,7 @@ export const INITIAL_HEROES: Hero[] = [
   {
     id: 12,
     name: 'Dr. Nice',
-    status: 'Active',
+    status: 'Removed',
     teamId: 1,
     equipmentIds: [1, 3],
   },
@@ -25,7 +25,7 @@ export const INITIAL_HEROES: Hero[] = [
   {
     id: 15,
     name: 'Magneta',
-    status: 'Active',
+    status: 'Inactive',
     teamId: 4,
     equipmentIds: [1, 2],
   },
@@ -53,7 +53,7 @@ export const INITIAL_HEROES: Hero[] = [
   {
     id: 19,
     name: 'Magma',
-    status: 'Active',
+    status: 'Suspended',
     teamId: 2,
     equipmentIds: [2, 4],
   },

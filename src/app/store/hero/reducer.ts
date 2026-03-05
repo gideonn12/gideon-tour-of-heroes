@@ -1,7 +1,6 @@
 import { ActionReducer, createReducer, on } from '@ngrx/store';
 import { addHero, deleteHero, loadHeroes, resetHero, updateHero } from './actions';
 import { Hero } from '../../features/models/hero/hero';
-import { HEROES } from '../../features/mocks/mock-heroes';
 
 export interface HeroState {
   heroes: Hero[];
@@ -45,7 +44,7 @@ export const heroReducer: ActionReducer<HeroState> = createReducer(
   })),
 
   on(resetHero, (state: HeroState, { id }: { id: number }): HeroState => {
-    const originalHero: Hero | undefined = HEROES.find((h: Hero) => h.id === id);
+    const originalHero: Hero | undefined = initialHeroState.heroes.find((h: Hero) => h.id === id);
 
     if (!originalHero) {
       return state;

@@ -1,0 +1,19 @@
+<p-dialog [visible]="visible()" [header]="hero()!.name + ' Details!' | uppercase" class="dialog border-round text-2xl">
+  @if (hero()) {
+    <p class="text-2xl">id: {{ hero()!.id }}</p>
+    <p>
+      <label class="text-2xl">Hero name:</label>
+      <input class="text-2xl" [(ngModel)]="hero()!.name" placeholder="name" />
+    </p>
+  }
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-center gap-3 w-full">
+      @for (btn of footerButtons; track btn.label) {
+        <p-button
+          [label]="btn.label"
+          (click)="btn.action()"
+          class="button w-6rem h-5rem border-round-xl flex align-items-center justify-content-center"/>
+      }
+    </div>
+  </ng-template>
+</p-dialog>

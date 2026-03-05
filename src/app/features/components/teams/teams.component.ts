@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, WritableSignal, computed } from '@angular/core';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { Team } from '../../models/team/team';
 import { Hero } from '../../models/hero/hero';
 import { UpperCasePipe } from '@angular/common';

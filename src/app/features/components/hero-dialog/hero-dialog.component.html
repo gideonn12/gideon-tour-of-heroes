@@ -1,16 +1,17 @@
-<p-dialog [visible]="visible()" [header]="hero()!.name + ' Details!' | uppercase" class="dialog border-round text-2xl">
+<p-dialog [visible]="visible()" [header]="hero()?.name + ' Details!' | uppercase" class="dialog border-round text-2xl">
   @if (hero()) {
     <div class="flex flex-column gap-3 p-3">
       <p class="text-2xl">id: {{ hero()!.id }}</p>
       <p class=>
         <label class="text-2xl">Hero name:</label>
-        <input class="text-2xl" [(ngModel)]="hero()!.name" placeholder="name" />
+        <input class="text-2xl"   [ngModel]="selectedName()" (ngModelChange)="selectedName.set($event)" placeholder="name" />
       </p>
       <p class="text-2xl border-round-xl p-3">Max Weight: {{ hero()!.maxWeight }}</p>
       <div class="flex flex-column gap-2 mb-6">
         <label class="text-2xl">Equipment:</label>
         <p-autoComplete
-          [(ngModel)]="selectedEquipment"
+          [ngModel]="selectedEquipment()"
+          (ngModelChange)="selectedEquipment.set($event)"
           [suggestions]="filteredEquipment"
           (completeMethod)="filterEquipment($event)"
           placeholder="Search equipment..."
@@ -22,7 +23,8 @@
       <div class="flex flex-column gap-2 mb-6">
         <label class="text-2xl">Team:</label>
         <p-autoComplete
-          [(ngModel)]="selectedTeam"
+          [ngModel]="selectedTeam()"
+          (ngModelChange)="selectedTeam.set($event)"
           [suggestions]="filteredTeams"
           (completeMethod)="filterTeam($event)"
           placeholder="Search team..."
@@ -34,7 +36,8 @@
       <div class="flex flex-column gap-2 mb-6">
         <label class="text-2xl">Status:</label>
         <p-autoComplete
-          [(ngModel)]="selectedStatus"
+          [ngModel]="selectedStatus()"
+          (ngModelChange)="selectedStatus.set($event)"
           [suggestions]="filteredStatus"
           (completeMethod)="filterStatus($event)"
           placeholder="Search Status..."
@@ -50,7 +53,8 @@
       @for (btn of footerButtons; track btn.label) {
         <p-button
           [label]="btn.label"
-          (click)="btn.action()"
+          (onClick)="!btn.disabled?.() && btn.action()"
+          [disabled]="btn.disabled? btn.disabled(): false"
           class="button w-6rem h-5rem border-round-xl flex align-items-center justify-content-center"/>
       }
     </div>

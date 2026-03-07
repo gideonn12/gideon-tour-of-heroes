@@ -151,4 +151,12 @@ export class HeroDialogComponent implements OnInit {
       JSON.stringify(this.equipment().filter(e => this.selectedEquipment().includes(e.type)).map(e => e.id).slice().sort());
     return nameChanged || statusChanged || teamChanged || equipmentChanged;
   });
+
+  overWeight = computed(() => {
+    if (!this.hero()) {
+      return false;
+    }
+    const totalWeight = this.equipment().filter(e => this.selectedEquipment().includes(e.type)).reduce((sum, e) => sum + e.weight, 0);
+    return totalWeight > this.hero()!.maxWeight;
+  });
 }

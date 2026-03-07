@@ -9,6 +9,9 @@
       <p class="text-2xl border-round-xl p-3">Max Weight: {{ hero()!.maxWeight }}</p>
       <div class="flex flex-column gap-2 mb-6">
         <label class="text-2xl">Equipment:</label>
+        <p class="text-2xl" [style.color]="overWeight() ? 'red' : 'green'">
+          {{ overWeight() ? 'Over weight limit!' : 'Within weight limit' }}
+        </p>
         <p-autoComplete
           [ngModel]="selectedEquipment()"
           (ngModelChange)="selectedEquipment.set($event)"

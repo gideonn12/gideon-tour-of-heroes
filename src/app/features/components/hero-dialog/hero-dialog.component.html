@@ -2,11 +2,11 @@
   @if (hero()) {
     <div class="flex flex-column gap-3 p-3">
       <p class="text-2xl">id: {{ hero()!.id }}</p>
-      <p class=>
+      <p>
         <label class="text-2xl">Hero name:</label>
-        <input class="text-2xl"   [ngModel]="selectedName()" (ngModelChange)="selectedName.set($event)" placeholder="name" />
+        <input class="text-2xl" [ngModel]="selectedName()" (ngModelChange)="selectedName.set($event)" placeholder="name" />
       </p>
-      <p class="text-2xl border-round-xl p-3">Max Weight: {{ hero()!.maxWeight }}</p>
+      <p class="text-2xl">Max Weight: {{ hero()!.maxWeight }}</p>
       <div class="flex flex-column gap-2 mb-6">
         <label class="text-2xl">Equipment:</label>
         <p class="text-2xl" [style.color]="overWeight() ? 'red' : 'green'">

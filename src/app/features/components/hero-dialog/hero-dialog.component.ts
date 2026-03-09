@@ -36,12 +36,10 @@ export class HeroDialogComponent implements OnInit {
   visible = signal<boolean>(false);
   teams = signal<Team[]>([]);
   equipment = signal<Equipment[]>([]);
-  allEquipment!: string[];
-  filteredEquipment: string[] = [];
-  selectedEquipment = signal<string[]>([]);
-  allTeams!: string[];
-  filteredTeams: string[] = [];
-  selectedTeam = signal<string>("");
+  filteredEquipment: Equipment[] = [];
+  selectedEquipment = signal<Equipment[]>([]);
+  filteredTeams: Team[] = [];
+  selectedTeam = signal<Team | null>(null);
   allStatus = HERO_STATUSES;
   filteredStatus: string[] = [];
   selectedStatus = signal<string>("");
@@ -66,16 +64,14 @@ export class HeroDialogComponent implements OnInit {
   initTeams(): void {
     this.teamsService.getTeams().subscribe((teams) => {
       this.teams.set(teams);
-      this.allTeams = this.teams().map((team) => team.name);
-      this.selectedTeam.set(this.teams().find((team) => team.id === this.hero()!.teamId)!.name);
+      this.selectedTeam.set(this.teams().find((team) => team.id === this.hero()!.teamId)!);
     });
   }
 
   initEquipments(): void {
     this.equipmentService.getEquipment().subscribe((equipment) => {
       this.equipment.set(equipment);
-      this.allEquipment = this.equipment().map((equipment) => equipment.type);
-      this.selectedEquipment.set(this.equipment().filter((equipment) => this.hero()?.equipmentIds.includes(equipment.id)).map((equipment) => equipment.type));
+      this.selectedEquipment.set(this.equipment().filter((equipment) => this.hero()?.equipmentIds.includes(equipment.id)));
     });
   }
 
@@ -94,8 +90,8 @@ export class HeroDialogComponent implements OnInit {
       id: this.hero()!.id,
       name: this.selectedName(),
       status: this.selectedStatus(),
-      teamId: this.teams().find((team) => team.name === this.selectedTeam())?.id!,
-      equipmentIds: this.equipment().filter((equipment) => this.selectedEquipment().includes(equipment.type)).map((equipment) => equipment.id),
+      teamId: this.selectedTeam()!.id,
+      equipmentIds: this.selectedEquipment().map((equipment) => equipment.id),
       maxWeight: this.hero()!.maxWeight,
     });
     this.goBack();
@@ -104,8 +100,8 @@ export class HeroDialogComponent implements OnInit {
   reset(): void {
     this.heroService.resetHero(this.id);
     this.selectedStatus.set(this.hero()!.status);
-    this.selectedTeam.set(this.teams().find((team) => team.id === this.hero()!.teamId)!.name);
-    this.selectedEquipment.set(this.equipment().filter((equipment) => this.hero()!.equipmentIds.includes(equipment.id)).map((equipment) => equipment.type));
+    this.selectedTeam.set(this.teams().find((team) => team.id === this.hero()!.teamId)!);
+    this.selectedEquipment.set(this.equipment().filter((equipment) => this.hero()!.equipmentIds.includes(equipment.id)));
     this.selectedName.set(this.hero()!.name);
   }
 
@@ -119,18 +115,15 @@ export class HeroDialogComponent implements OnInit {
   }
 
   filterEquipment(event: AutoCompleteCompleteEvent): void {
-    const query = event.query.toLowerCase();
-    this.filteredEquipment = this.allEquipment.filter((item) => item.toLowerCase().includes(query));
+    this.filteredEquipment = this.equipment().filter((e) => e.type.toLowerCase().includes(event.query.toLowerCase()));
   }
 
   filterTeam(event: AutoCompleteCompleteEvent): void {
-    const query = event.query.toLowerCase();
-    this.filteredTeams = this.allTeams.filter((item) => item.toLowerCase().includes(query));
+    this.filteredTeams = this.teams().filter((t) => t.name.toLowerCase().includes(event.query.toLowerCase()));
   }
 
   filterStatus(event: AutoCompleteCompleteEvent): void {
-    const query = event.query.toLowerCase();
-    this.filteredStatus = this.allStatus.filter((item) => item.toLowerCase().includes(query));
+    this.filteredStatus = this.allStatus.filter((item) => item.toLowerCase().includes(event.query.toLowerCase()));
   }
 
   hasChanges = computed(() => {
@@ -139,9 +132,9 @@ export class HeroDialogComponent implements OnInit {
     }
     const nameChanged = this.originalHero()?.name !== this.selectedName();
     const statusChanged = this.originalHero()?.status !== this.selectedStatus();
-    const teamChanged = this.originalHero()?.teamId !== this.teams().find((team) => team.name === this.selectedTeam())?.id;
+    const teamChanged = this.originalHero()?.teamId !== this.teams().find((team) => team === this.selectedTeam())?.id;
     const equipmentChanged = JSON.stringify(this.originalHero()!.equipmentIds.slice().sort()) !==
-      JSON.stringify(this.equipment().filter(e => this.selectedEquipment().includes(e.type)).map(e => e.id).slice().sort());
+      JSON.stringify(this.selectedEquipment().map((equipment) => equipment.id).slice().sort());
     return nameChanged || statusChanged || teamChanged || equipmentChanged;
   });
 
@@ -149,7 +142,7 @@ export class HeroDialogComponent implements OnInit {
     if (!this.hero()) {
       return false;
     }
-    const totalWeight = this.equipment().filter(e => this.selectedEquipment().includes(e.type)).reduce((sum, e) => sum + e.weight, 0);
+    const totalWeight = this.selectedEquipment().reduce((sum, equipment) => sum + equipment.weight, 0);
     return totalWeight > this.hero()!.maxWeight;
   });
 }

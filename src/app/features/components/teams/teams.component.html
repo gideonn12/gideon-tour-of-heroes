@@ -4,7 +4,7 @@
       <div class="border-round-xl w-17rem h-15rem flex flex-column align-items-center" [style.background-color]="team.color">
         {{team.id}} {{team.name | uppercase}}
         <div class="flex flex-column gap-2 white-space-nowrap align-items-center overflow-hidden w-full mt-2">
-          @for (hero of team.teamHeroes; track hero.id) {
+          @for (hero of team.heroes; track hero.id) {
             <span class="text-xl overflow-hidden">{{ hero.name }}</span>
           }
         </div>

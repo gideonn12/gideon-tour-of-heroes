@@ -24,10 +24,9 @@ export class TeamsComponent implements OnInit {
   }
 
   teamsWithHeroes = computed(() => {
-    const allHeroes = this.heroes();
     return this.teams().map(team => ({
       ...team,
-      teamHeroes: allHeroes.filter(hero => team.heroIds.includes(hero.id))
+      heroes: this.heroes().filter(hero => team.heroIds.includes(hero.id))
     }));
   });
 }

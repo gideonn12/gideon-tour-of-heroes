@@ -1,24 +1,32 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { Team } from '../../models/team/team';
-import { loadTeams } from '../../../store/teams/actions';
-import { Store } from '@ngrx/store';
-import { selectAllTeams } from '../../../store/teams/selector';
+import { Hero } from '../../models/hero/hero';
 import { UpperCasePipe } from '@angular/common';
 import { HeroService } from '../../services/hero.service';
+import { TeamsService } from "../../services/teams.service";
 
 @Component({
   selector: 'app-teams',
   imports: [UpperCasePipe],
-  providers: [HeroService],
+  providers: [HeroService, TeamsService],
   templateUrl: './teams.component.html',
   styleUrl: './teams.component.scss',
 })
 export class TeamsComponent implements OnInit {
   teams = signal<Team[]>([]);
-  private store: Store<any> = inject(Store);
+  heroes = signal<Hero[]>([]);
+  private heroService: HeroService = inject(HeroService);
+  private teamsService: TeamsService = inject(TeamsService);
 
   ngOnInit(): void {
-    this.store.dispatch(loadTeams());
-    this.store.select(selectAllTeams).subscribe((teams: Team[]) => this.teams.set(teams));
+    this.teamsService.getTeams().subscribe((teams: Team[]) => this.teams.set(teams));
+    this.heroService.getHeroes().subscribe((heroes: Hero[]) => this.heroes.set(heroes));
   }
+
+  teamsWithHeroes = computed(() => {
+    return this.teams().map(team => ({
+      ...team,
+      heroes: this.heroes().filter(hero => team.heroIds.includes(hero.id))
+    }));
+  });
 }

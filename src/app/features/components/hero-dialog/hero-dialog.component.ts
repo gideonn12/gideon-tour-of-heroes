@@ -36,7 +36,6 @@ export class HeroDialogComponent implements OnInit {
   visible = signal<boolean>(true);
   teams = signal<Team[]>([]);
   equipment = signal<Equipment[]>([]);
-  footerButtons: FooterButton[] = [];
   allEquipment!: string[];
   filteredEquipment: string[] = [];
   selectedEquipment = signal<string[]>([]);
@@ -47,6 +46,11 @@ export class HeroDialogComponent implements OnInit {
   filteredStatus: string[] = [];
   selectedStatus = signal<string>("");
   selectedName = signal<string>("");
+  footerButtons = [
+    { label: "Delete", action: () => this.delete() },
+    { label: "Reset", action: () => this.reset() , disabled: () => !this.hasChanges() },
+    { label: "Save", action: () => this.save() , disabled: () => !this.hasChanges() },
+    { label: "Back", action: () => this.goBack() }];
   private heroService: HeroService = inject(HeroService);
   private teamsService: TeamsService = inject(TeamsService);
   private equipmentService: EquipmentService = inject(EquipmentService);
@@ -54,7 +58,6 @@ export class HeroDialogComponent implements OnInit {
   private id: number = Number(this.route.snapshot.paramMap.get("id"));
 
   ngOnInit(): void {
-    this.initializeButtons();
     this.getHero();
     this.initTeams();
     this.initEquipments();
@@ -74,15 +77,6 @@ export class HeroDialogComponent implements OnInit {
       this.allEquipment = this.equipment().map((equipment) => equipment.type);
       this.selectedEquipment.set(this.equipment().filter((equipment) => this.hero()?.equipmentIds.includes(equipment.id)).map((equipment) => equipment.type));
     });
-  }
-
-  initializeButtons(): void {
-    this.footerButtons = [
-      { label: "Delete", action: () => this.delete() },
-      { label: "Reset", action: () => this.reset() , disabled: () => !this.hasChanges() },
-      { label: "Save", action: () => this.save() , disabled: () => !this.hasChanges() },
-      { label: "Back", action: () => this.goBack() },
-    ];
   }
 
   getHero(): void {

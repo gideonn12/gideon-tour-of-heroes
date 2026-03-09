@@ -33,7 +33,7 @@ import { Equipment } from "../../models/equipment/equipment";
 export class HeroDialogComponent implements OnInit {
   hero = signal<Hero | null>(null);
   originalHero = signal<Hero | null>(null);
-  visible = signal<boolean>(true);
+  visible = signal<boolean>(false);
   teams = signal<Team[]>([]);
   equipment = signal<Equipment[]>([]);
   allEquipment!: string[];
@@ -85,6 +85,7 @@ export class HeroDialogComponent implements OnInit {
       this.originalHero.set({ ...hero });
       this.selectedStatus.set(this.hero()!.status);
       this.selectedName.set(this.hero()!.name);
+      this.visible.set(true);
     });
   }
 
@@ -110,8 +111,6 @@ export class HeroDialogComponent implements OnInit {
 
   delete(): void {
     this.heroService.deleteHero(this.id);
-    this.hero.set(null);
-    this.originalHero.set(null);
     this.goBack();
   }
 

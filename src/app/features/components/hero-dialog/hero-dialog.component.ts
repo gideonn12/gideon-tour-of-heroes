@@ -132,9 +132,9 @@ export class HeroDialogComponent implements OnInit {
     }
     const nameChanged = this.originalHero()?.name !== this.selectedName();
     const statusChanged = this.originalHero()?.status !== this.selectedStatus();
-    const teamChanged = this.originalHero()?.teamId !== this.teams().find((team) => team === this.selectedTeam())?.id;
-    const equipmentChanged = JSON.stringify(this.originalHero()!.equipmentIds.slice().sort()) !==
-      JSON.stringify(this.selectedEquipment().map((equipment) => equipment.id).slice().sort());
+    const teamChanged = this.originalHero()?.teamId !== this.selectedTeam()?.id;
+    const equipmentChanged = this.selectedEquipment().length !== this.originalHero()!.equipmentIds.length ||
+      this.selectedEquipment().some(e => !this.originalHero()!.equipmentIds.includes(e.id));
     return nameChanged || statusChanged || teamChanged || equipmentChanged;
   });
 

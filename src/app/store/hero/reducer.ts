@@ -35,9 +35,12 @@ export const heroReducer: ActionReducer<HeroState> = createReducer(
 
   on(resetHero, (state: HeroState, { id }: { id: number }): HeroState => {
     const originalHero: Hero | undefined = initialHeroState.heroes.find((h: Hero) => h.id === id);
+    if (!originalHero) {
+      return state;
+    }
     return {
       ...state,
-      heroes: state.heroes.map((hero: Hero) => (hero.id === id ? originalHero : hero)!),
+      heroes: state.heroes.map((hero: Hero) => (hero.id === id ? originalHero : hero)),
     };
   }),
 );

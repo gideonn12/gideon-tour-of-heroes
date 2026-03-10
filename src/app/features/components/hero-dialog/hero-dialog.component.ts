@@ -13,6 +13,7 @@ import { TeamsService } from '../../services/teams.service';
 import { EquipmentService } from '../../services/equipment.service';
 import { Team } from "../../models/team/team";
 import { Equipment } from "../../models/equipment/equipment";
+import { validateAlphanumeric } from '../../utils/validator';
 
 @Component({
   selector: "app-hero-dialog",
@@ -44,7 +45,8 @@ export class HeroDialogComponent implements OnInit {
   filteredStatus: string[] = [];
   selectedStatus = signal<string>("");
   selectedName = signal<string>("");
-  footerButtons = [
+  nameErrors = signal<string[]>([]);
+  footerButtons: FooterButton[] = [
     { label: "Delete", action: () => this.delete() },
     { label: "Reset", action: () => this.reset() , disabled: () => !this.hasChanges() },
     { label: "Save", action: () => this.save() , disabled: () => !this.hasChanges() },
@@ -145,4 +147,8 @@ export class HeroDialogComponent implements OnInit {
     const totalWeight = this.selectedEquipment().reduce((sum, equipment) => sum + equipment.weight, 0);
     return totalWeight > this.hero()!.maxWeight;
   });
+
+  onNameChange(value: string): void {
+    validateAlphanumeric(value, this.selectedName, this.nameErrors);
+  }
 }

@@ -1,7 +1,7 @@
 <div class="flex justify-content-center">
   <div class="text-3xl gap-3">
     @for (equipment of equipmentWithUsage(); track equipment.id) {
-      <div class="equipments mb-3 border-round-xl w-24rem h-6rem flex flex-row align-items-center gap-2">
+      <div class="equipments mb-3 border-round-xl w-24rem h-6rem flex flex-row align-items-center gap-2" (click)="onEquipmentClick(equipment.id)">
         <span class="flex align-items-center gap-2 w-3rem">
           {{ equipment.id }}
           <span

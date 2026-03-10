@@ -43,13 +43,11 @@ export class HeroesComponent implements OnInit {
   }
 
   heroesWithTeamsEquipment = computed(() => {
-    const allTeams = this.teams();
-    const allEquipments = this.equipments();
     return this.heroes().map(hero => ({
       ...hero,
-      teamName: allTeams.find(team => team.id === hero.teamId)?.name,
-      teamColor: allTeams.find(team => team.id === hero.teamId)?.color,
-      equipments: allEquipments.filter(equipment => hero.equipmentIds.includes(equipment.id)).map(equipment => equipment.icon),
+      teamName: this.teams().find(team => team.id === hero.teamId)?.name,
+      teamColor: this.teams().find(team => team.id === hero.teamId)?.color,
+      equipments: this.equipments().filter(equipment => hero.equipmentIds.includes(equipment.id)).map(equipment => equipment.icon),
     }));
   });
 }

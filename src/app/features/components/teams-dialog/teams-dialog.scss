@@ -1,0 +1,11 @@
+:host ::ng-deep .dialog {
+  .p-dialog-content {
+    background-color: var(--background-color);
+  }
+  .p-dialog-header {
+    background-color: var(--background-color);
+  }
+  .p-dialog-footer {
+    background-color: var(--background-color);
+  }
+}

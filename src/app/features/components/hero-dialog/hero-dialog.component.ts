@@ -92,7 +92,7 @@ export class HeroDialogComponent implements OnInit {
       id: this.hero()!.id,
       name: this.selectedName(),
       status: this.selectedStatus(),
-      teamId: this.selectedTeam()!.id,
+      teamId: this.selectedTeam()?.id ?? null,
       equipmentIds: this.selectedEquipment().map((equipment) => equipment.id),
       maxWeight: this.hero()!.maxWeight,
     });

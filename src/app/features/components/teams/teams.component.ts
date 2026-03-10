@@ -4,6 +4,8 @@ import { Hero } from '../../models/hero/hero';
 import { UpperCasePipe } from '@angular/common';
 import { HeroService } from '../../services/hero.service';
 import { TeamsService } from "../../services/teams.service";
+import { appRoutes } from '../../../app/app.routes';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-teams',
@@ -15,6 +17,7 @@ import { TeamsService } from "../../services/teams.service";
 export class TeamsComponent implements OnInit {
   teams = signal<Team[]>([]);
   heroes = signal<Hero[]>([]);
+  private router: Router = inject(Router);
   private heroService: HeroService = inject(HeroService);
   private teamsService: TeamsService = inject(TeamsService);
 
@@ -29,4 +32,8 @@ export class TeamsComponent implements OnInit {
       heroes: this.heroes().filter(hero => team.heroIds.includes(hero.id))
     }));
   });
+
+  onTeamClick(id: number) {
+    this.router.navigate(["/", appRoutes.TEAM_DIALOG, id]);
+  }
 }

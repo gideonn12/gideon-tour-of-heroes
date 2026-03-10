@@ -4,6 +4,7 @@ import { DashboardComponent } from '../features/components/dashboard/dashboard.c
 import { HeroDialogComponent } from '../features/components/hero-dialog/hero-dialog.component';
 import { TeamsComponent } from '../features/components/teams/teams.component';
 import { EquipmentComponent } from '../features/components/equipment/equipment.component';
+import { TeamsDialog } from '../features/components/teams-dialog/teams-dialog';
 
 export enum appRoutes {
   HEROES = 'heroes',
@@ -11,6 +12,7 @@ export enum appRoutes {
   DETAIL = 'detail',
   TEAMS = 'teams',
   EQUIPMENT = 'equipment',
+  TEAM_DIALOG = 'team-dialog',
 }
 
 export const routes: Routes = [
@@ -20,4 +22,5 @@ export const routes: Routes = [
   { path: `${appRoutes.DETAIL}/:id`, component: HeroDialogComponent },
   { path: appRoutes.TEAMS, component: TeamsComponent, title: 'Teams' },
   { path: appRoutes.EQUIPMENT, component: EquipmentComponent, title: 'Equipment' },
+  { path: `${appRoutes.TEAM_DIALOG}/:id`, component: TeamsDialog },
 ];

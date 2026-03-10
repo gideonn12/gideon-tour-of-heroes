@@ -14,7 +14,8 @@
       <p-button
         class="route border-round-xl w-10rem h-8rem flex justify-content-center"
         [label]="team.name"
-        [style.background-color]="team.color" />
+        [style.background-color]="team.color"
+        [routerLink]="['/', appRoutes.TEAM_DIALOG, team.id]"/>
     }
   </div>
 </div>

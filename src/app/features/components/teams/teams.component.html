@@ -1,7 +1,7 @@
 <div class="flex justify-content-center">
   <div class="grid justify-content-center gap-4 lg:col-4 text-xl">
     @for (team of teamsWithHeroes(); track team.id) {
-      <div class="border-round-xl w-17rem h-15rem flex flex-column align-items-center" [style.background-color]="team.color">
+      <div class="border-round-xl w-17rem h-15rem flex flex-column align-items-center" [style.background-color]="team.color" (click)="onTeamClick(team.id)">
         {{team.id}} {{team.name | uppercase}}
         <div class="flex flex-column gap-2 white-space-nowrap align-items-center overflow-hidden w-full mt-2">
           @for (hero of team.heroes; track hero.id) {

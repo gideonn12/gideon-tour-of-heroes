@@ -23,7 +23,7 @@ export class EquipmentComponent implements OnInit {
   private teamsService: TeamsService = inject(TeamsService);
 
   ngOnInit(): void {
-    this.equipmentService.getEquipment().subscribe((equipments: Equipment[]) => this.equipments.set(equipments));
+    this.equipmentService.getEquipments().subscribe((equipments: Equipment[]) => this.equipments.set(equipments));
     this.heroService.getHeroes().subscribe((heroes: Hero[]) => this.heroes.set(heroes));
     this.teamsService.getTeams().subscribe((teams: Team[]) => this.teams.set(teams));
   }

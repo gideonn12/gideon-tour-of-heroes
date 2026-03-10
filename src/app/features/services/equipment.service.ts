@@ -9,7 +9,7 @@ import { loadEquipment } from "../../store/equipment/actions";
 export class EquipmentService {
   private store: Store<any> = inject(Store);
 
-  getEquipment(): Observable<Equipment[]> {
+  getEquipments(): Observable<Equipment[]> {
     this.store.dispatch(loadEquipment());
     return this.store.select(selectAllEquipments);
   }

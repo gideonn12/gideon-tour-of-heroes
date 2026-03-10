@@ -31,7 +31,7 @@ export class HeroesComponent implements OnInit {
   ngOnInit(): void {
     this.heroService.getHeroes().subscribe((heroes: Hero[]) => this.heroes.set(heroes));
     this.teamsService.getTeams().subscribe((teams: Team[]) => this.teams.set(teams));
-    this.equipmentService.getEquipment().subscribe((equipments: Equipment[]) => this.equipments.set(equipments));
+    this.equipmentService.getEquipments().subscribe((equipments: Equipment[]) => this.equipments.set(equipments));
   }
 
   onItemChange(event: any): void {

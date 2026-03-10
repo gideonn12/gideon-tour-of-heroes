@@ -71,7 +71,7 @@ export class HeroDialogComponent implements OnInit {
   }
 
   initEquipments(): void {
-    this.equipmentService.getEquipment().subscribe((equipment) => {
+    this.equipmentService.getEquipments().subscribe((equipment) => {
       this.equipment.set(equipment);
       this.selectedEquipment.set(this.equipment().filter((equipment) => this.hero()?.equipmentIds.includes(equipment.id)));
     });

@@ -47,6 +47,7 @@ button {
 button:hover {
   background-color: black;
 }
+
 button:hover {
   background-color: black;
   color: white;
@@ -60,4 +61,16 @@ button:disabled {
 
 * {
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.p-dialog-content {
+  background-color: var(--background-color);
+}
+
+.p-dialog-header {
+  background-color: var(--background-color);
+}
+
+.p-dialog-footer {
+  background-color: var(--background-color);
 }

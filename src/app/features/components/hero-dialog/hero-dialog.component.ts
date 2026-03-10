@@ -64,7 +64,7 @@ export class HeroDialogComponent implements OnInit {
   initTeams(): void {
     this.teamsService.getTeams().subscribe((teams) => {
       this.teams.set(teams);
-      this.selectedTeam.set(this.teams().find((team) => team.id === this.hero()!.teamId)!);
+      this.selectedTeam.set(this.teams().find((team) => team.id === this.hero()!.teamId)?? null);
     });
   }
 
@@ -100,7 +100,7 @@ export class HeroDialogComponent implements OnInit {
   reset(): void {
     this.heroService.resetHero(this.id);
     this.selectedStatus.set(this.hero()!.status);
-    this.selectedTeam.set(this.teams().find((team) => team.id === this.hero()!.teamId)!);
+    this.selectedTeam.set(this.teams().find((team) => team.id === this.hero()!.teamId)?? null);
     this.selectedEquipment.set(this.equipment().filter((equipment) => this.hero()!.equipmentIds.includes(equipment.id)));
     this.selectedName.set(this.hero()!.name);
   }
@@ -132,7 +132,7 @@ export class HeroDialogComponent implements OnInit {
     }
     const nameChanged = this.originalHero()?.name !== this.selectedName();
     const statusChanged = this.originalHero()?.status !== this.selectedStatus();
-    const teamChanged = this.originalHero()?.teamId !== this.selectedTeam()?.id;
+    const teamChanged = this.originalHero()?.teamId !== (this.selectedTeam()?.id ?? null);
     const equipmentChanged = this.selectedEquipment().length !== this.originalHero()!.equipmentIds.length ||
       this.selectedEquipment().some(e => !this.originalHero()!.equipmentIds.includes(e.id));
     return nameChanged || statusChanged || teamChanged || equipmentChanged;

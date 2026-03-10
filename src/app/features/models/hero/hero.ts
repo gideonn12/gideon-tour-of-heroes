@@ -11,7 +11,7 @@ export interface Hero {
   id: number;
   name: string;
   status: HeroStatus;
-  teamId: number;
+  teamId: number | null;
   equipmentIds: number[];
   maxWeight: number;
 }

@@ -8,7 +8,6 @@ export const INITIAL_HEROES: Hero[] = [
   { id: 16, name: 'RubberMan',           status: 'Active',    teamId: 5,    equipmentIds: [12],     maxWeight: 6  },
   { id: 17, name: 'Dynama',              status: 'Active',    teamId: 4,    equipmentIds: [13, 14], maxWeight: 8  },
   { id: 18, name: 'Dr. IQ',             status: 'Active',    teamId: 5,    equipmentIds: [17],     maxWeight: 7  },
-  { id: 19, name: 'Magma',              status: 'Suspended', teamId: null, equipmentIds: [],        maxWeight: 9  },
   { id: 20, name: 'Tornado',            status: 'Active',    teamId: 6,    equipmentIds: [19, 20], maxWeight: 12 },
   { id: 1,  name: 'Gabriel is the best', status: 'Active',   teamId: null, equipmentIds: [],        maxWeight: 7  },
 ];

@@ -10,7 +10,7 @@ import { EquipmentDialog } from '../features/components/equipment-dialog/equipme
 export enum appRoutes {
   HEROES = 'heroes',
   DASHBOARD = 'dashboard',
-  DETAIL = 'detail',
+  HERO_DIALOG = 'detail',
   TEAMS = 'teams',
   EQUIPMENT = 'equipment',
   TEAM_DIALOG = 'team-dialog',
@@ -21,9 +21,10 @@ export const routes: Routes = [
   { path: appRoutes.HEROES, component: HeroesComponent, title: 'Heroes' },
   { path: appRoutes.DASHBOARD, component: DashboardComponent, title: 'Dashboard' },
   { path: '', redirectTo: appRoutes.DASHBOARD, pathMatch: 'full' },
-  { path: `${appRoutes.DETAIL}/:id`, component: HeroDialogComponent },
+  { path: `${appRoutes.HERO_DIALOG}/:id`, component: HeroDialogComponent },
   { path: appRoutes.TEAMS, component: TeamsComponent, title: 'Teams' },
   { path: appRoutes.EQUIPMENT, component: EquipmentComponent, title: 'Equipment' },
   { path: `${appRoutes.TEAM_DIALOG}/:id`, component: TeamsDialog },
   { path: `${appRoutes.EQUIPMENT_DIALOG}/:id`, component: EquipmentDialog },
+  { path: appRoutes.HERO_DIALOG, component: HeroDialogComponent }
 ];

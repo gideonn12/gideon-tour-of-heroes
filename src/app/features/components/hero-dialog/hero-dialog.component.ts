@@ -47,7 +47,7 @@ export class HeroDialogComponent implements OnInit {
   selectedName = signal<string>("");
   nameErrors = signal<string[]>([]);
   footerButtons: FooterButton[] = [
-    { label: "Delete", action: () => this.delete() },
+    { label: "Delete", action: () => this.delete(), disabled: () => this.id == null },
     { label: "Reset", action: () => this.reset() , disabled: () => !this.hasChanges() },
     { label: "Save", action: () => this.save() , disabled: () => !this.hasChanges() },
     { label: "Back", action: () => this.goBack() }];
@@ -55,10 +55,15 @@ export class HeroDialogComponent implements OnInit {
   private teamsService: TeamsService = inject(TeamsService);
   private equipmentService: EquipmentService = inject(EquipmentService);
   private route: ActivatedRoute = inject(ActivatedRoute);
-  private id: number = Number(this.route.snapshot.paramMap.get("id"));
+  private id: number | null = this.route.snapshot.paramMap.get("id")? Number(this.route.snapshot.paramMap.get("id")) : null;
 
   ngOnInit(): void {
-    this.getHero();
+    if (!this.id) {
+      this.initNewHero();
+    }
+    else {
+      this.getHero();
+    }
     this.initTeams();
     this.initEquipments();
   }
@@ -78,7 +83,7 @@ export class HeroDialogComponent implements OnInit {
   }
 
   getHero(): void {
-    this.heroService.getHero(this.id).subscribe((hero) => {
+    this.heroService.getHero(this.id!).subscribe((hero) => {
       this.hero.set({ ...hero });
       this.originalHero.set({ ...hero });
       this.selectedStatus.set(this.hero()!.status);
@@ -88,6 +93,17 @@ export class HeroDialogComponent implements OnInit {
   }
 
   save(): void {
+    if (!this.id) {
+      this.heroService.addHero({
+        id: this.hero()!.id,
+        name: this.selectedName(),
+        status: this.selectedStatus(),
+        teamId: this.selectedTeam()?.id ?? null,
+        equipmentIds: this.selectedEquipment().map((equipment) => equipment.id),
+        maxWeight: this.hero()!.maxWeight,
+      });
+      this.goBack();
+    }
     this.heroService.updateHero({
       id: this.hero()!.id,
       name: this.selectedName(),
@@ -100,7 +116,7 @@ export class HeroDialogComponent implements OnInit {
   }
 
   reset(): void {
-    this.heroService.resetHero(this.id);
+    this.heroService.resetHero(this.id!);
     this.selectedStatus.set(this.hero()!.status);
     this.selectedTeam.set(this.teams().find((team) => team.id === this.hero()!.teamId)?? null);
     this.selectedEquipment.set(this.equipment().filter((equipment) => this.hero()!.equipmentIds.includes(equipment.id)));
@@ -108,7 +124,7 @@ export class HeroDialogComponent implements OnInit {
   }
 
   delete(): void {
-    this.heroService.deleteHero(this.id);
+    this.heroService.deleteHero(this.id!);
     this.goBack();
   }
 
@@ -150,5 +166,21 @@ export class HeroDialogComponent implements OnInit {
 
   onNameChange(value: string): void {
     validateAlphanumeric(value, this.selectedName, this.nameErrors);
+  }
+
+  initNewHero(): void {
+    const newHero: Hero = {
+      id: Date.now(),
+      name: '',
+      status: HERO_STATUSES[0],
+      teamId: null,
+      equipmentIds: [],
+      maxWeight: 10,
+    };
+    this.hero.set({ ...newHero });
+    this.originalHero.set({ ...newHero });
+    this.selectedStatus.set(newHero.status);
+    this.selectedName.set(newHero.name);
+    this.visible.set(true);
   }
 }

@@ -11,10 +11,11 @@ import { Team } from "../../models/team/team";
 import { Equipment } from "../../models/equipment/equipment";
 import { EquipmentService } from "../../services/equipment.service";
 import { TeamsService } from "../../services/teams.service";
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-heroes',
-  imports: [FormsModule, Listbox, PrimeTemplate, NgStyle],
+  imports: [FormsModule, Listbox, PrimeTemplate, NgStyle, Button],
   providers: [HeroService, TeamsService, EquipmentService],
   templateUrl: './heroes.component.html',
   styleUrls: ['./heroes.component.scss'],
@@ -35,7 +36,7 @@ export class HeroesComponent implements OnInit {
   }
 
   onItemChange(event: any): void {
-    this.router.navigate(["/", appRoutes.DETAIL, event.value]);
+    this.router.navigate(["/", appRoutes.HERO_DIALOG, event.value]);
   }
 
   getStatusColor(status: HeroStatus): string {
@@ -50,4 +51,8 @@ export class HeroesComponent implements OnInit {
       equipments: this.equipments().filter(equipment => hero.equipmentIds.includes(equipment.id)).map(equipment => equipment.icon),
     }));
   });
+
+  addNewHero(): void {
+    this.router.navigate(["/", appRoutes.HERO_DIALOG]);
+  }
 }

@@ -45,6 +45,7 @@ export class TeamsDialog implements OnInit {
   private heroService: HeroService = inject(HeroService);
   private route: ActivatedRoute = inject(ActivatedRoute);
   private id: number | null = this.route.snapshot.paramMap.get("id")? Number(this.route.snapshot.paramMap.get("id")) : null;
+  private teamsLength: number = 7;
 
   ngOnInit(): void {
     if (!this.id) {
@@ -137,7 +138,7 @@ export class TeamsDialog implements OnInit {
 
   initNewTeam(): void {
     const newTeam: Team = {
-      id: Date.now(),
+      id: this.teamsLength + 1,
       name: "",
       color: "#000000",
       heroIds: []

@@ -4,3 +4,12 @@
     background-color: var(--hover-color);
   }
 }
+
+.clear {
+  background-color: var(--background-color);
+
+  &:hover {
+    color: var(--hover-text-color);
+    background-color: var(--hover-color);
+  }
+}

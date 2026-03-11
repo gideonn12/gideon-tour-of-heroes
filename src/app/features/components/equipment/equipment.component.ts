@@ -8,10 +8,11 @@ import { TeamsService } from '../../services/teams.service';
 import { Team } from '../../models/team/team';
 import { appRoutes } from '../../../app/app.routes';
 import { Router } from '@angular/router';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: "app-equipment",
-  imports: [UpperCasePipe],
+  imports: [UpperCasePipe, Button],
   providers: [EquipmentService, HeroService, TeamsService],
   templateUrl: "./equipment.component.html",
   styleUrl: "./equipment.component.scss",
@@ -42,5 +43,9 @@ export class EquipmentComponent implements OnInit {
 
   onEquipmentClick(id: number) {
     this.router.navigate(["/", appRoutes.EQUIPMENT_DIALOG, id]);
+  }
+
+  addNewEquipment(): void {
+    this.router.navigate(["/", appRoutes.EQUIPMENT_DIALOG]);
   }
 }

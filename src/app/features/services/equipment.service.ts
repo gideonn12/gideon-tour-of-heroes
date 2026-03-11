@@ -3,7 +3,7 @@ import { Store } from "@ngrx/store";
 import { map, Observable } from 'rxjs';
 import { Equipment } from "../models/equipment/equipment";
 import { selectAllEquipments } from "../../store/equipment/selector";
-import { loadEquipment, updateEquipment, resetEquipment, deleteEquipment } from "../../store/equipment/actions";
+import { loadEquipment, updateEquipment, resetEquipment, deleteEquipment, addEquipment } from "../../store/equipment/actions";
 
 @Injectable()
 export class EquipmentService {
@@ -28,5 +28,9 @@ export class EquipmentService {
 
   resetEquipment(id: number): void {
     this.store.dispatch(resetEquipment({ id }));
+  }
+
+  addEquipment(equipment: Equipment): void {
+    this.store.dispatch(addEquipment({ equipment }));
   }
 }

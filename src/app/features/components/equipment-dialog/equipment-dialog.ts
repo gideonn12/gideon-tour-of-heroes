@@ -37,14 +37,20 @@ export class EquipmentDialog implements OnInit {
     { label: "Back", action: () => this.goBack() }];
   private equipmentService: EquipmentService = inject(EquipmentService);
   private route: ActivatedRoute = inject(ActivatedRoute);
-  private id: number = Number(this.route.snapshot.paramMap.get("id"));
+  private id: number | null = this.route.snapshot.paramMap.get("id")? Number(this.route.snapshot.paramMap.get("id")) : null;
+  private equipmentLength: number = 20;
 
   ngOnInit(): void {
-    this.getEquipment();
+    if (!this.id) {
+      this.initNewEquipment();
+    }
+    else {
+      this.getEquipment();
+    }
   }
 
   getEquipment(): void {
-    this.equipmentService.getEquipment(this.id).subscribe((equipment: Equipment) => {
+    this.equipmentService.getEquipment(this.id!).subscribe((equipment: Equipment) => {
       this.equipment.set(equipment);
       this.originalEquipment.set(equipment);
       this.selectedType.set(equipment.type);
@@ -54,8 +60,16 @@ export class EquipmentDialog implements OnInit {
   }
 
   save(): void {
+    if (!this.id) {
+      this.equipmentService.addEquipment({
+        id: this.equipment()!.id,
+        type: this.selectedType(),
+        icon: this.selectedIcon(),
+        weight: this.selectedWeight()
+      });
+    }
     this.equipmentService.updateEquipment({
-      id: this.id,
+      id: this.id!,
       type: this.selectedType(),
       icon: this.selectedIcon(),
       weight: this.selectedWeight()
@@ -64,11 +78,14 @@ export class EquipmentDialog implements OnInit {
   }
 
   reset(): void {
-    this.equipmentService.resetEquipment(this.id);
+    this.equipmentService.resetEquipment(this.id!);
+    this.selectedType.set(this.originalEquipment()!.type);
+    this.selectedIcon.set(this.originalEquipment()!.icon);
+    this.selectedWeight.set(this.originalEquipment()!.weight);
   }
 
   delete(): void {
-    this.equipmentService.deleteEquipment(this.id);
+    this.equipmentService.deleteEquipment(this.id!);
     this.goBack();
   }
 
@@ -83,7 +100,19 @@ export class EquipmentDialog implements OnInit {
     return typeChanged || iconChanged || weightChanged;
   });
 
-  onTypeChange(value: string) {
+  onTypeChange(value: string): void {
     validateAlphanumeric(value, this.selectedType, this.nameErrors);
+  }
+
+  initNewEquipment(): void {
+    const newEquipment: Equipment = {
+      id: this.equipmentLength +1,
+      type: "",
+      icon: "",
+      weight: 0
+    };
+    this.equipment.set({ ...newEquipment });
+    this.originalEquipment.set({ ...newEquipment });
+    this.visible.set(true);
   }
 }

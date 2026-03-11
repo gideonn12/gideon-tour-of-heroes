@@ -6,10 +6,11 @@ import { HeroService } from '../../services/hero.service';
 import { TeamsService } from "../../services/teams.service";
 import { appRoutes } from '../../../app/app.routes';
 import { Router } from '@angular/router';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-teams',
-  imports: [UpperCasePipe],
+  imports: [UpperCasePipe, Button],
   providers: [HeroService, TeamsService],
   templateUrl: './teams.component.html',
   styleUrl: './teams.component.scss',
@@ -35,5 +36,9 @@ export class TeamsComponent implements OnInit {
 
   onTeamClick(id: number) {
     this.router.navigate(["/", appRoutes.TEAM_DIALOG, id]);
+  }
+
+  addNewTeam(): void {
+    this.router.navigate(["/", appRoutes.TEAM_DIALOG]);
   }
 }

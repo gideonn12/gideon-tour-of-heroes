@@ -37,22 +37,27 @@ export class TeamsDialog implements OnInit {
   visible = signal<boolean>(true);
   nameErrors = signal<string[]>([]);
   footerButtons: FooterButton[] = [
-    { label: "Delete", action: () => this.delete() },
+    { label: "Delete", action: () => this.delete() , disabled: () => this.id === null },
     { label: "Reset", action: () => this.reset() , disabled: () => !this.hasChanges() },
     { label: "Save", action: () => this.save() , disabled: () => !this.hasChanges() },
     { label: "Back", action: () => this.goBack() }];
   private teamsService: TeamsService = inject(TeamsService);
   private heroService: HeroService = inject(HeroService);
   private route: ActivatedRoute = inject(ActivatedRoute);
-  private id: number = Number(this.route.snapshot.paramMap.get("id"));
+  private id: number | null = this.route.snapshot.paramMap.get("id")? Number(this.route.snapshot.paramMap.get("id")) : null;
 
   ngOnInit(): void {
-    this.getTeam();
+    if (!this.id) {
+      this.initNewTeam();
+    }
+    else {
+      this.getTeam();
+    }
     this.getAllHeroes();
   }
 
   getTeam(): void {
-    this.teamsService.getTeam(this.id).subscribe((team: Team) => {
+    this.teamsService.getTeam(this.id!).subscribe((team: Team) => {
       this.team.set({ ...team });
       this.originalTeam.set({ ...team });
       this.selectedName.set(team.name);
@@ -63,16 +68,25 @@ export class TeamsDialog implements OnInit {
   getAllHeroes(): void {
     this.heroService.getHeroes().subscribe((heroes: Hero[]) => {
       this.allHeroes.set(heroes);
-      this.heroes.set(this.allHeroes().filter(hero => this.team()?.heroIds.includes(hero.id)));
+      this.heroes.set(this.allHeroes().filter(hero => this.team()?.heroIds?.includes(hero.id)));
       this.availableHeroes.set([...this.allHeroes().filter(hero => hero.teamId === null), ...this.heroes()]);
-    })
+    });
   }
 
   save(): void {
     const currentHeroes = this.heroes().map(hero => hero.id);
     this.updateHeroesTeam();
+    if (!this.id) {
+      this.teamsService.addTeam({
+        id: this.team()!.id,
+        name: this.selectedName(),
+        color: this.selectedColor(),
+        heroIds: currentHeroes
+      });
+      this.goBack();
+    }
     this.teamsService.updateTeam({
-      id: this.id,
+      id: this.id!,
       name: this.selectedName(),
       color: this.selectedColor(),
       heroIds: currentHeroes
@@ -81,12 +95,14 @@ export class TeamsDialog implements OnInit {
   }
 
   reset(): void  {
-    this.teamsService.resetTeam(this.id);
-    this.heroes.set(this.allHeroes().filter(hero => this.team()?.heroIds.includes(hero.id)));
+    this.teamsService.resetTeam(this.id!);
+    this.selectedName.set(this.originalTeam()!.name);
+    this.selectedColor.set(this.originalTeam()!.color);
+    this.heroes.set(this.allHeroes().filter(hero => this.originalTeam()?.heroIds.includes(hero.id)));
   }
 
   delete(): void {
-    this.teamsService.deleteTeam(this.id);
+    this.teamsService.deleteTeam(this.id!);
     this.goBack();
   }
 
@@ -117,5 +133,17 @@ export class TeamsDialog implements OnInit {
 
   onNameChange(value: string): void {
     validateAlphanumeric(value, this.selectedName, this.nameErrors);
+  }
+
+  initNewTeam(): void {
+    const newTeam: Team = {
+      id: Date.now(),
+      name: "",
+      color: "#000000",
+      heroIds: []
+    };
+    this.team.set(newTeam);
+    this.selectedColor.set(newTeam.color);
+    this.originalTeam.set(newTeam);
   }
 }

@@ -26,5 +26,6 @@ export const routes: Routes = [
   { path: appRoutes.EQUIPMENT, component: EquipmentComponent, title: 'Equipment' },
   { path: `${appRoutes.TEAM_DIALOG}/:id`, component: TeamsDialog },
   { path: `${appRoutes.EQUIPMENT_DIALOG}/:id`, component: EquipmentDialog },
-  { path: appRoutes.HERO_DIALOG, component: HeroDialogComponent }
+  { path: appRoutes.HERO_DIALOG, component: HeroDialogComponent },
+  { path: appRoutes.TEAM_DIALOG, component: TeamsDialog },
 ];

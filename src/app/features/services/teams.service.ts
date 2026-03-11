@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
 import { Team } from '../models/team/team';
 import { selectAllTeams } from '../../store/teams/selector';
-import { loadTeams, updateTeam, deleteTeam, resetTeam } from "../../store/teams/actions";
+import { loadTeams, updateTeam, deleteTeam, resetTeam, addTeam } from '../../store/teams/actions';
 
 @Injectable()
 export class TeamsService {
@@ -28,5 +28,9 @@ export class TeamsService {
 
   resetTeam(id: number): void {
     this.store.dispatch(resetTeam({ id }));
+  }
+
+  addTeam(team: Team): void {
+    this.store.dispatch(addTeam({ team }));
   }
 }

@@ -46,6 +46,7 @@ export class HeroDialogComponent implements OnInit {
   selectedStatus = signal<string>("");
   selectedName = signal<string>("");
   nameErrors = signal<string[]>([]);
+  heroes = signal<Hero[]>([]);
   footerButtons: FooterButton[] = [
     { label: "Delete", action: () => this.delete(), disabled: () => this.id == null },
     { label: "Reset", action: () => this.reset() , disabled: () => !this.hasChanges() },
@@ -64,6 +65,9 @@ export class HeroDialogComponent implements OnInit {
     else {
       this.getHero();
     }
+    this.heroService.getHeroes().subscribe(heroes => {
+      this.heroes.set(heroes);
+    });
     this.initTeams();
     this.initEquipments();
   }
@@ -77,7 +81,7 @@ export class HeroDialogComponent implements OnInit {
 
   initEquipments(): void {
     this.equipmentService.getEquipments().subscribe((equipment) => {
-      this.equipment.set(equipment);
+      this.equipment.set(equipment.filter(e => !this.heroes().some(h => h.equipmentIds.includes(e.id)) || this.hero()?.equipmentIds.includes(e.id)));
       this.selectedEquipment.set(this.equipment().filter((equipment) => this.hero()?.equipmentIds.includes(equipment.id)));
     });
   }

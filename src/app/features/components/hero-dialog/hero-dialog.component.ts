@@ -107,15 +107,27 @@ export class HeroDialogComponent implements OnInit {
         equipmentIds: this.selectedEquipment().map((equipment) => equipment.id),
         maxWeight: this.hero()!.maxWeight,
       });
-      this.goBack();
     }
-    this.heroService.updateHero({
-      id: this.hero()!.id,
-      name: this.selectedName(),
-      status: this.selectedStatus(),
-      teamId: this.selectedTeam()?.id ?? null,
-      equipmentIds: this.selectedEquipment().map((equipment) => equipment.id),
-      maxWeight: this.hero()!.maxWeight,
+    else {
+      this.heroService.updateHero({
+        id: this.hero()!.id,
+        name: this.selectedName(),
+        status: this.selectedStatus(),
+        teamId: this.selectedTeam()?.id ?? null,
+        equipmentIds: this.selectedEquipment().map((equipment) => equipment.id),
+        maxWeight: this.hero()!.maxWeight,
+      });
+    }
+    const previousTeam = this.teams().find((team: Team) => team.heroIds.includes(this.hero()!.id));
+    if (previousTeam) {
+      this.teamsService.updateTeam({
+        ...previousTeam,
+        heroIds: previousTeam.heroIds.filter((id) => id !== this.hero()!.id)
+      });
+    }
+    this.teamsService.updateTeam({
+      ...this.selectedTeam()!,
+      heroIds: [...(this.selectedTeam()!.heroIds ?? []), this.hero()!.id],
     });
     this.goBack();
   }

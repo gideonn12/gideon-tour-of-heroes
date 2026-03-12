@@ -25,6 +25,7 @@ export class EquipmentComponent implements OnInit {
   private heroService: HeroService = inject(HeroService);
   private teamsService: TeamsService = inject(TeamsService);
   private router: Router = inject(Router);
+  private PINK: string = '#e65beb';
 
   ngOnInit(): void {
     this.equipmentService.getEquipments().subscribe((equipments: Equipment[]) => this.equipments.set(equipments));
@@ -37,7 +38,7 @@ export class EquipmentComponent implements OnInit {
       ...equipment,
       isUsed: this.heroes().some(hero => hero.equipmentIds.includes(equipment.id)),
       usedBy: this.heroes().find(hero => hero.equipmentIds.includes(equipment.id))?.name,
-      color: this.teams().find(team => team.id === this.heroes().find(hero => hero.equipmentIds.includes(equipment.id))?.teamId)?.color ?? '#e65beb',
+      color: this.teams().find(team => team.id === this.heroes().find(hero => hero.equipmentIds.includes(equipment.id))?.teamId)?.color ?? this.PINK,
     }));
   });
 

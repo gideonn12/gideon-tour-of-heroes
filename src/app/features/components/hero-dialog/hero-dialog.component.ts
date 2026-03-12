@@ -98,25 +98,19 @@ export class HeroDialogComponent implements OnInit {
   }
 
   save(): void {
+    const hero = {
+      id: this.hero()!.id,
+      name: this.selectedName(),
+      status: this.selectedStatus(),
+      teamId: this.selectedTeam()?.id,
+      equipmentIds: this.selectedEquipment().map((equipment) => equipment.id),
+      maxWeight: this.hero()!.maxWeight
+    }
     if (!this.id) {
-      this.heroService.addHero({
-        id: this.hero()!.id,
-        name: this.selectedName(),
-        status: this.selectedStatus(),
-        teamId: this.selectedTeam()?.id,
-        equipmentIds: this.selectedEquipment().map((equipment) => equipment.id),
-        maxWeight: this.hero()!.maxWeight,
-      });
+      this.heroService.addHero(hero);
     }
     else {
-      this.heroService.updateHero({
-        id: this.hero()!.id,
-        name: this.selectedName(),
-        status: this.selectedStatus(),
-        teamId: this.selectedTeam()?.id,
-        equipmentIds: this.selectedEquipment().map((equipment) => equipment.id),
-        maxWeight: this.hero()!.maxWeight,
-      });
+      this.heroService.updateHero(hero);
     }
     const previousTeam = this.teams().find((team: Team) => team.heroIds.includes(this.hero()!.id));
     if (previousTeam) {
@@ -125,10 +119,12 @@ export class HeroDialogComponent implements OnInit {
         heroIds: previousTeam.heroIds.filter((id) => id !== this.hero()!.id)
       });
     }
-    this.teamsService.updateTeam({
-      ...this.selectedTeam()!,
-      heroIds: [...(this.selectedTeam()!.heroIds ?? []), this.hero()!.id],
-    });
+    if (this.selectedTeam()) {
+      this.teamsService.updateTeam({
+        ...this.selectedTeam()!,
+        heroIds: [...(this.selectedTeam()!.heroIds ?? []), this.hero()!.id],
+      });
+    }
     this.goBack();
   }
 

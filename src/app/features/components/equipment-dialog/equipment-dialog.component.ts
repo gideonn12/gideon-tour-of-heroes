@@ -105,7 +105,7 @@ export class EquipmentDialogComponent implements OnInit {
   initNewEquipment(): void {
     this.equipmentService.getEquipments().subscribe((equipments: Equipment[]) => {
       this.equipmentLength = equipments.length;
-    })
+    });
     const newEquipment: Equipment = {
       id: this.equipmentLength +1,
       type: "",

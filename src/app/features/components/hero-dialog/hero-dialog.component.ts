@@ -189,7 +189,6 @@ export class HeroDialogComponent implements OnInit {
       id: this.heroesLength + 1,
       name: '',
       status: HERO_STATUSES[0],
-      teamId: undefined,
       equipmentIds: [],
       maxWeight: 10,
     };

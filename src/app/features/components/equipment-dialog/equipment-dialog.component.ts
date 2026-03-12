@@ -19,8 +19,8 @@ import { validateAlphanumeric } from '../../utils/validator';
     FormsModule
   ],
   providers: [EquipmentService],
-  templateUrl: "./equipment-dialog.html",
-  styleUrl: "./equipment-dialog.scss",
+  templateUrl: "./equipment-dialog.component.html",
+  styleUrl: "./equipment-dialog.component.scss",
 })
 export class EquipmentDialogComponent implements OnInit {
   visible = signal(true);

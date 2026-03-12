@@ -103,7 +103,7 @@ export class HeroDialogComponent implements OnInit {
         id: this.hero()!.id,
         name: this.selectedName(),
         status: this.selectedStatus(),
-        teamId: this.selectedTeam()?.id ?? null,
+        teamId: this.selectedTeam()?.id,
         equipmentIds: this.selectedEquipment().map((equipment) => equipment.id),
         maxWeight: this.hero()!.maxWeight,
       });
@@ -113,7 +113,7 @@ export class HeroDialogComponent implements OnInit {
         id: this.hero()!.id,
         name: this.selectedName(),
         status: this.selectedStatus(),
-        teamId: this.selectedTeam()?.id ?? null,
+        teamId: this.selectedTeam()?.id,
         equipmentIds: this.selectedEquipment().map((equipment) => equipment.id),
         maxWeight: this.hero()!.maxWeight,
       });
@@ -190,7 +190,7 @@ export class HeroDialogComponent implements OnInit {
       id: this.heroesLength + 1,
       name: '',
       status: HERO_STATUSES[0],
-      teamId: null,
+      teamId: undefined,
       equipmentIds: [],
       maxWeight: 10,
     };

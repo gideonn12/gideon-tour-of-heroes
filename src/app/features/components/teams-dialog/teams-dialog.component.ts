@@ -23,8 +23,8 @@ import { validateAlphanumeric } from '../../utils/validator';
     MultiSelect
   ],
   providers: [TeamsService, HeroService],
-  templateUrl: "./teams-dialog.html",
-  styleUrl: "./teams-dialog.scss",
+  templateUrl: "./teams-dialog.component.html",
+  styleUrl: "./teams-dialog.component.scss",
 })
 export class TeamsDialogComponent implements OnInit {
   originalTeam = signal<Team | null>(null);
@@ -44,7 +44,7 @@ export class TeamsDialogComponent implements OnInit {
   private teamsService: TeamsService = inject(TeamsService);
   private heroService: HeroService = inject(HeroService);
   private route: ActivatedRoute = inject(ActivatedRoute);
-  private id: number | null = this.route.snapshot.paramMap.get("id")? Number(this.route.snapshot.paramMap.get("id")) : null;
+  private id?: number = Number(this.route.snapshot.paramMap.get("id"));
   private teamsLength: number = 7;
 
   ngOnInit(): void {
@@ -118,7 +118,7 @@ export class TeamsDialogComponent implements OnInit {
     const removedHeroIds = oldHeroIds.filter(id => !currentHeroIds.includes(id));
 
     addedHeroIds.map(id => this.heroService.updateHero({ ...this.allHeroes().find(hero => hero.id === id)!, teamId: this.id }));
-    removedHeroIds.map(id => this.heroService.updateHero({ ...this.allHeroes().find(hero => hero.id === id)!, teamId: null }));
+    removedHeroIds.map(id => this.heroService.updateHero({ ...this.allHeroes().find(hero => hero.id === id)!, teamId: undefined }));
   }
 
   hasChanges= computed(() => {

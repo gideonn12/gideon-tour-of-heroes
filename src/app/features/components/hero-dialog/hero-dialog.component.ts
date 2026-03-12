@@ -57,7 +57,6 @@ export class HeroDialogComponent implements OnInit {
   private equipmentService: EquipmentService = inject(EquipmentService);
   private route: ActivatedRoute = inject(ActivatedRoute);
   private id: number | null = this.route.snapshot.paramMap.get("id")? Number(this.route.snapshot.paramMap.get("id")) : null;
-  private heroesLength: number = 0;
 
   ngOnInit(): void {
     if (!this.id) {
@@ -182,11 +181,8 @@ export class HeroDialogComponent implements OnInit {
   }
 
   initNewHero(): void {
-    this.heroService.getHeroes().subscribe((heroes: Hero[]) => {
-      this.heroesLength = heroes.length;
-    });
     const newHero: Hero = {
-      id: this.heroesLength + 1,
+      id: this.heroService.getHeroesLength() + 1,
       name: '',
       status: HERO_STATUSES[0],
       equipmentIds: [],

@@ -8,6 +8,7 @@ import { loadTeams, updateTeam, deleteTeam, resetTeam, addTeam } from '../../sto
 @Injectable()
 export class TeamsService {
   private store: Store<any> = inject(Store);
+  private teamsLength: number = 0;
 
   getTeams(): Observable<Team[]> {
     this.store.dispatch(loadTeams());
@@ -32,5 +33,10 @@ export class TeamsService {
 
   addTeam(team: Team): void {
     this.store.dispatch(addTeam({ team }));
+  }
+
+  getTeamsLength(): number {
+    this.store.select(selectAllTeams).subscribe((teams: Team[]) => this.teamsLength = teams.length);
+    return this.teamsLength;
   }
 }

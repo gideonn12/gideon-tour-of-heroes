@@ -11,6 +11,7 @@ import { deleteHero, loadHeroes, resetHero, updateHero, addHero, } from "../../s
 export class HeroService {
   private messageService: MessageService = inject(MessageService);
   private store: Store<any> = inject(Store);
+  private heroesLength: number = 0;
 
   getHeroes(): Observable<Hero[]> {
     this.sendMessage();
@@ -41,5 +42,10 @@ export class HeroService {
 
   addHero(hero: Hero): void {
     this.store.dispatch(addHero({ hero }));
+  }
+
+  getHeroesLength(): number {
+    this.store.select(selectAllHeroes).subscribe((heroes: Hero[]) => this.heroesLength = heroes.length);
+    return this.heroesLength;
   }
 }

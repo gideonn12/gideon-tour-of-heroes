@@ -38,7 +38,6 @@ export class EquipmentDialogComponent implements OnInit {
   private equipmentService: EquipmentService = inject(EquipmentService);
   private route: ActivatedRoute = inject(ActivatedRoute);
   private id: number | null = this.route.snapshot.paramMap.get("id")? Number(this.route.snapshot.paramMap.get("id")) : null;
-  private equipmentLength: number = 0;
 
   ngOnInit(): void {
     if (!this.id) {
@@ -103,11 +102,8 @@ export class EquipmentDialogComponent implements OnInit {
   }
 
   initNewEquipment(): void {
-    this.equipmentService.getEquipments().subscribe((equipments: Equipment[]) => {
-      this.equipmentLength = equipments.length;
-    });
     const newEquipment: Equipment = {
-      id: this.equipmentLength +1,
+      id: this.equipmentService.getEquipmentLength() +1,
       type: "",
       icon: "",
       weight: 0

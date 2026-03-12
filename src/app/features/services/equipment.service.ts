@@ -8,6 +8,7 @@ import { loadEquipment, updateEquipment, resetEquipment, deleteEquipment, addEqu
 @Injectable()
 export class EquipmentService {
   private store: Store<any> = inject(Store);
+  private equipmentLength: number = 0;
 
   getEquipments(): Observable<Equipment[]> {
     this.store.dispatch(loadEquipment());
@@ -32,5 +33,10 @@ export class EquipmentService {
 
   addEquipment(equipment: Equipment): void {
     this.store.dispatch(addEquipment({ equipment }));
+  }
+
+  getEquipmentLength(): number {
+    this.store.select(selectAllEquipments).subscribe((equipments: Equipment[])=> this.equipmentLength = equipments.length);
+    return this.equipmentLength;
   }
 }

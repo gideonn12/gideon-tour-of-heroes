@@ -77,21 +77,18 @@ export class TeamsDialogComponent implements OnInit {
   save(): void {
     const currentHeroes = this.heroes().map(hero => hero.id);
     this.updateHeroesTeam();
-    if (!this.id) {
-      this.teamsService.addTeam({
-        id: this.team()!.id,
-        name: this.selectedName(),
-        color: this.selectedColor(),
-        heroIds: currentHeroes
-      });
-      this.goBack();
-    }
-    this.teamsService.updateTeam({
-      id: this.id!,
+    const team = {
+      id: this.team()!.id,
       name: this.selectedName(),
       color: this.selectedColor(),
       heroIds: currentHeroes
-    });
+      };
+    if (!this.id) {
+      this.teamsService.addTeam(team);
+      this.goBack();
+      return;
+    }
+    this.teamsService.updateTeam(team);
     this.goBack();
   }
 

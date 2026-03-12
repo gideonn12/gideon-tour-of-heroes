@@ -11,7 +11,7 @@ export const INITIAL_TEAMS: Team[] = [
     id: 2,
     name: 'Mars',
     color: '#FF4500',
-    heroIds: [13, 19],
+    heroIds: [13],
   },
   {
     id: 3,

@@ -4,20 +4,29 @@ import { DashboardComponent } from '../features/components/dashboard/dashboard.c
 import { HeroDialogComponent } from '../features/components/hero-dialog/hero-dialog.component';
 import { TeamsComponent } from '../features/components/teams/teams.component';
 import { EquipmentComponent } from '../features/components/equipment/equipment.component';
+import { TeamsDialogComponent } from '../features/components/teams-dialog/teams-dialog.component';
+import { EquipmentDialogComponent } from '../features/components/equipment-dialog/equipment-dialog.component';
 
 export enum appRoutes {
   HEROES = 'heroes',
   DASHBOARD = 'dashboard',
-  DETAIL = 'detail',
+  HERO_DIALOG = 'detail',
   TEAMS = 'teams',
   EQUIPMENT = 'equipment',
+  TEAM_DIALOG = 'team-dialog',
+  EQUIPMENT_DIALOG = 'equipment-dialog',
 }
 
 export const routes: Routes = [
   { path: appRoutes.HEROES, component: HeroesComponent, title: 'Heroes' },
   { path: appRoutes.DASHBOARD, component: DashboardComponent, title: 'Dashboard' },
   { path: '', redirectTo: appRoutes.DASHBOARD, pathMatch: 'full' },
-  { path: `${appRoutes.DETAIL}/:id`, component: HeroDialogComponent },
+  { path: `${appRoutes.HERO_DIALOG}/:id`, component: HeroDialogComponent },
   { path: appRoutes.TEAMS, component: TeamsComponent, title: 'Teams' },
   { path: appRoutes.EQUIPMENT, component: EquipmentComponent, title: 'Equipment' },
+  { path: `${appRoutes.TEAM_DIALOG}/:id`, component: TeamsDialogComponent },
+  { path: `${appRoutes.EQUIPMENT_DIALOG}/:id`, component: EquipmentDialogComponent },
+  { path: appRoutes.HERO_DIALOG, component: HeroDialogComponent },
+  { path: appRoutes.TEAM_DIALOG, component: TeamsDialogComponent },
+  { path: appRoutes.EQUIPMENT_DIALOG, component: EquipmentDialogComponent },
 ];

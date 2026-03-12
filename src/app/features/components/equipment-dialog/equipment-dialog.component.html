@@ -1,0 +1,33 @@
+@if (visible()) {
+  <p-dialog [visible]="true" [header]="equipment()?.type + ' Details!' | uppercase" class="dialog border-round text-2xl">
+    <div class="flex flex-column gap-3 p-3">
+      <p class="text-2xl">id: {{ equipment()!.id }}</p>
+      <p>
+        <label class="text-2xl">Type:</label>
+        <input class="text-2xl" [ngModel]="selectedType()" (ngModelChange)="onTypeChange($event)" placeholder="type" />
+        @for (error of nameErrors(); track error) {
+          <small class="text-red-500 block">⚠️ {{ error }} </small>
+        }
+      </p>
+      <p>
+        <label class="text-2xl">Icon:</label>
+        <input class="text-2xl" [ngModel]="selectedIcon()" (ngModelChange)="selectedIcon.set($event)" placeholder="icon" />
+      </p>
+      <p>
+        <label class="text-2xl">Weight:</label>
+        <input class="text-2xl" type="number" [ngModel]="selectedWeight()" (ngModelChange)="selectedWeight.set($event)" placeholder="weight" />
+      </p>
+    </div>
+    <ng-template pTemplate="footer">
+      <div class="flex justify-content-center gap-3 w-full mt-2">
+        @for (btn of footerButtons; track btn.label) {
+          <p-button
+            [label]="btn.label"
+            (onClick)="!btn.disabled?.() && btn.action()"
+            [disabled]="btn.disabled? btn.disabled(): false"
+            styleClass="buttons w-6rem h-5rem border-round-xl flex align-items-center justify-content-center" />
+        }
+      </div>
+    </ng-template>
+  </p-dialog>
+}

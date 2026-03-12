@@ -1,12 +1,24 @@
+<p-button class="clear border-round-lg flex flex-column justify-content-center w-14rem mt-6" label="Add New Equipment" (click)="this.addNewEquipment()" />
 <div class="flex justify-content-center">
   <div class="text-3xl gap-3">
-    @for (equipment of equipments(); track equipment.id) {
-      <div class="equipments mb-3 border-round-xl w-15rem h-4rem flex flex-row align-items-center gap-2">
-        <span class="flex-shrink-0 m-1">{{equipment.id}}</span>
-        <span class="flex-grow-1 text-center overflow-hidden">
-          {{equipment.type | uppercase}}
+    @for (equipment of equipmentWithUsage(); track equipment.id) {
+      <div class="equipments mb-3 border-round-xl w-24rem h-6rem flex flex-row align-items-center gap-2" (click)="onEquipmentClick(equipment.id)">
+        <span class="flex align-items-center gap-2 w-3rem">
+          {{ equipment.id }}
+          <span
+            class="border-circle flex align-items-center status-dot"
+            [class.status-used]="equipment.isUsed"
+            [class.status-available]="!equipment.isUsed">
+          </span>
         </span>
-        <span class="flex-shrink-0">{{equipment.icon}}</span>
+        <span class="flex align-items-center w-8rem overflow-hidden ml-2">
+          {{ equipment.type | uppercase }}
+        </span>
+        <span class="flex align-items-center w-3rem">{{ equipment.icon }}</span>
+        <span class="flex align-items-center"
+          [style.background-color]="equipment.color">
+          {{ equipment.usedBy ? equipment.usedBy : 'Not used' }}
+        </span>
       </div>
     }
   </div>

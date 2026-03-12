@@ -11,10 +11,11 @@ import { Team } from "../../models/team/team";
 import { Equipment } from "../../models/equipment/equipment";
 import { EquipmentService } from "../../services/equipment.service";
 import { TeamsService } from "../../services/teams.service";
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-heroes',
-  imports: [FormsModule, Listbox, PrimeTemplate, NgStyle],
+  imports: [FormsModule, Listbox, PrimeTemplate, NgStyle, Button],
   providers: [HeroService, TeamsService, EquipmentService],
   templateUrl: './heroes.component.html',
   styleUrls: ['./heroes.component.scss'],
@@ -31,11 +32,11 @@ export class HeroesComponent implements OnInit {
   ngOnInit(): void {
     this.heroService.getHeroes().subscribe((heroes: Hero[]) => this.heroes.set(heroes));
     this.teamsService.getTeams().subscribe((teams: Team[]) => this.teams.set(teams));
-    this.equipmentService.getEquipment().subscribe((equipments: Equipment[]) => this.equipments.set(equipments));
+    this.equipmentService.getEquipments().subscribe((equipments: Equipment[]) => this.equipments.set(equipments));
   }
 
   onItemChange(event: any): void {
-    this.router.navigate(["/", appRoutes.DETAIL, event.value]);
+    this.router.navigate(["/", appRoutes.HERO_DIALOG, event.value]);
   }
 
   getStatusColor(status: HeroStatus): string {
@@ -43,13 +44,15 @@ export class HeroesComponent implements OnInit {
   }
 
   heroesWithTeamsEquipment = computed(() => {
-    const allTeams = this.teams();
-    const allEquipments = this.equipments();
     return this.heroes().map(hero => ({
       ...hero,
-      teamName: allTeams.find(team => team.id === hero.teamId)?.name,
-      teamColor: allTeams.find(team => team.id === hero.teamId)?.color,
-      equipments: allEquipments.filter(equipment => hero.equipmentIds.includes(equipment.id)).map(equipment => equipment.icon),
+      teamName: this.teams().find(team => team.id === hero.teamId)?.name,
+      teamColor: this.teams().find(team => team.id === hero.teamId)?.color,
+      equipments: this.equipments().filter(equipment => hero.equipmentIds.includes(equipment.id)).map(equipment => equipment.icon),
     }));
   });
+
+  addNewHero(): void {
+    this.router.navigate(["/", appRoutes.HERO_DIALOG]);
+  }
 }

@@ -17,3 +17,12 @@
   height: 1.8em;
   margin-right: .8em;
 }
+
+.clear {
+  background-color: var(--background-color);
+
+  &:hover {
+    color: var(--hover-text-color);
+    background-color: var(--hover-color);
+  }
+}

@@ -13,6 +13,7 @@ import { TeamsService } from '../../services/teams.service';
 import { EquipmentService } from '../../services/equipment.service';
 import { Team } from "../../models/team/team";
 import { Equipment } from "../../models/equipment/equipment";
+import { validateAlphanumeric } from '../../utils/validator';
 
 @Component({
   selector: "app-hero-dialog",
@@ -44,8 +45,10 @@ export class HeroDialogComponent implements OnInit {
   filteredStatus: string[] = [];
   selectedStatus = signal<string>("");
   selectedName = signal<string>("");
-  footerButtons = [
-    { label: "Delete", action: () => this.delete() },
+  nameErrors = signal<string[]>([]);
+  heroes = signal<Hero[]>([]);
+  footerButtons: FooterButton[] = [
+    { label: "Delete", action: () => this.delete(), disabled: () => this.id == null },
     { label: "Reset", action: () => this.reset() , disabled: () => !this.hasChanges() },
     { label: "Save", action: () => this.save() , disabled: () => !this.hasChanges() },
     { label: "Back", action: () => this.goBack() }];
@@ -53,10 +56,18 @@ export class HeroDialogComponent implements OnInit {
   private teamsService: TeamsService = inject(TeamsService);
   private equipmentService: EquipmentService = inject(EquipmentService);
   private route: ActivatedRoute = inject(ActivatedRoute);
-  private id: number = Number(this.route.snapshot.paramMap.get("id"));
+  private id: number | null = this.route.snapshot.paramMap.get("id")? Number(this.route.snapshot.paramMap.get("id")) : null;
 
   ngOnInit(): void {
-    this.getHero();
+    if (!this.id) {
+      this.initNewHero();
+    }
+    else {
+      this.getHero();
+    }
+    this.heroService.getHeroes().subscribe(heroes => {
+      this.heroes.set(heroes);
+    });
     this.initTeams();
     this.initEquipments();
   }
@@ -64,19 +75,19 @@ export class HeroDialogComponent implements OnInit {
   initTeams(): void {
     this.teamsService.getTeams().subscribe((teams) => {
       this.teams.set(teams);
-      this.selectedTeam.set(this.teams().find((team) => team.id === this.hero()!.teamId)!);
+      this.selectedTeam.set(this.teams().find((team) => team.id === this.hero()!.teamId)?? null);
     });
   }
 
   initEquipments(): void {
-    this.equipmentService.getEquipment().subscribe((equipment) => {
-      this.equipment.set(equipment);
+    this.equipmentService.getEquipments().subscribe((equipment) => {
+      this.equipment.set(equipment.filter(e => !this.heroes().some(h => h.equipmentIds.includes(e.id)) || this.hero()?.equipmentIds.includes(e.id)));
       this.selectedEquipment.set(this.equipment().filter((equipment) => this.hero()?.equipmentIds.includes(equipment.id)));
     });
   }
 
   getHero(): void {
-    this.heroService.getHero(this.id).subscribe((hero) => {
+    this.heroService.getHero(this.id!).subscribe((hero) => {
       this.hero.set({ ...hero });
       this.originalHero.set({ ...hero });
       this.selectedStatus.set(this.hero()!.status);
@@ -86,27 +97,46 @@ export class HeroDialogComponent implements OnInit {
   }
 
   save(): void {
-    this.heroService.updateHero({
+    const hero = {
       id: this.hero()!.id,
       name: this.selectedName(),
       status: this.selectedStatus(),
-      teamId: this.selectedTeam()!.id,
+      teamId: this.selectedTeam()?.id,
       equipmentIds: this.selectedEquipment().map((equipment) => equipment.id),
-      maxWeight: this.hero()!.maxWeight,
-    });
+      maxWeight: this.hero()!.maxWeight
+    }
+    if (!this.id) {
+      this.heroService.addHero(hero);
+    }
+    else {
+      this.heroService.updateHero(hero);
+    }
+    const previousTeam = this.teams().find((team: Team) => team.heroIds.includes(this.hero()!.id));
+    if (previousTeam) {
+      this.teamsService.updateTeam({
+        ...previousTeam,
+        heroIds: previousTeam.heroIds.filter((id) => id !== this.hero()!.id)
+      });
+    }
+    if (this.selectedTeam()) {
+      this.teamsService.updateTeam({
+        ...this.selectedTeam()!,
+        heroIds: [...(this.selectedTeam()!.heroIds ?? []), this.hero()!.id],
+      });
+    }
     this.goBack();
   }
 
   reset(): void {
-    this.heroService.resetHero(this.id);
+    this.heroService.resetHero(this.id!);
     this.selectedStatus.set(this.hero()!.status);
-    this.selectedTeam.set(this.teams().find((team) => team.id === this.hero()!.teamId)!);
+    this.selectedTeam.set(this.teams().find((team) => team.id === this.hero()!.teamId)?? null);
     this.selectedEquipment.set(this.equipment().filter((equipment) => this.hero()!.equipmentIds.includes(equipment.id)));
     this.selectedName.set(this.hero()!.name);
   }
 
   delete(): void {
-    this.heroService.deleteHero(this.id);
+    this.heroService.deleteHero(this.id!);
     this.goBack();
   }
 
@@ -132,7 +162,7 @@ export class HeroDialogComponent implements OnInit {
     }
     const nameChanged = this.originalHero()?.name !== this.selectedName();
     const statusChanged = this.originalHero()?.status !== this.selectedStatus();
-    const teamChanged = this.originalHero()?.teamId !== this.selectedTeam()?.id;
+    const teamChanged = this.originalHero()?.teamId !== (this.selectedTeam()?.id ?? null);
     const equipmentChanged = this.selectedEquipment().length !== this.originalHero()!.equipmentIds.length ||
       this.selectedEquipment().some(e => !this.originalHero()!.equipmentIds.includes(e.id));
     return nameChanged || statusChanged || teamChanged || equipmentChanged;
@@ -145,4 +175,23 @@ export class HeroDialogComponent implements OnInit {
     const totalWeight = this.selectedEquipment().reduce((sum, equipment) => sum + equipment.weight, 0);
     return totalWeight > this.hero()!.maxWeight;
   });
+
+  onNameChange(value: string): void {
+    validateAlphanumeric(value, this.selectedName, this.nameErrors);
+  }
+
+  initNewHero(): void {
+    const newHero: Hero = {
+      id: this.heroService.getHeroesLength() + 1,
+      name: '',
+      status: HERO_STATUSES[0],
+      equipmentIds: [],
+      maxWeight: 10,
+    };
+    this.hero.set({ ...newHero });
+    this.originalHero.set({ ...newHero });
+    this.selectedStatus.set(newHero.status);
+    this.selectedName.set(newHero.name);
+    this.visible.set(true);
+  }
 }

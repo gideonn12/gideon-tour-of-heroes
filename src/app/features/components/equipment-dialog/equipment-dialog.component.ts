@@ -60,20 +60,18 @@ export class EquipmentDialogComponent implements OnInit {
   }
 
   save(): void {
-    if (!this.id) {
-      this.equipmentService.addEquipment({
-        id: this.equipment()!.id,
-        type: this.selectedType(),
-        icon: this.selectedIcon(),
-        weight: this.selectedWeight()
-      });
-    }
-    this.equipmentService.updateEquipment({
-      id: this.id!,
+    const equipment = {
+      id: this.equipment()!.id,
       type: this.selectedType(),
       icon: this.selectedIcon(),
       weight: this.selectedWeight()
-    });
+    }
+    if (!this.id) {
+      this.equipmentService.addEquipment(equipment);
+      this.goBack();
+      return;
+    }
+    this.equipmentService.updateEquipment(equipment);
       this.goBack();
   }
 

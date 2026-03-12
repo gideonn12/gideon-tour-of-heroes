@@ -13,3 +13,16 @@
     background-color: var(--hover-color);
   }
 }
+
+.status-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+
+  &.status-used {
+    background-color: grey;
+  }
+
+  &.status-available {
+    background-color: green;
+  }
+}

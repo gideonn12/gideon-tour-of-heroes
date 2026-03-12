@@ -6,12 +6,12 @@
         <span class="flex align-items-center gap-2 w-3rem">
           {{ equipment.id }}
           <span
-            class="border-circle flex align-items-center"
-            style="width: 0.6rem; height: 0.6rem"
-            [style.background-color]="equipment.isUsed ? 'grey' : 'green'">
+            class="border-circle flex align-items-center status-dot"
+            [class.status-used]="equipment.isUsed"
+            [class.status-available]="!equipment.isUsed">
           </span>
         </span>
-        <span class="flex align-items-center w-8rem overflow-hidden">
+        <span class="flex align-items-center w-8rem overflow-hidden ml-2">
           {{ equipment.type | uppercase }}
         </span>
         <span class="flex align-items-center w-3rem">{{ equipment.icon }}</span>

@@ -4,8 +4,8 @@ import { DashboardComponent } from '../features/components/dashboard/dashboard.c
 import { HeroDialogComponent } from '../features/components/hero-dialog/hero-dialog.component';
 import { TeamsComponent } from '../features/components/teams/teams.component';
 import { EquipmentComponent } from '../features/components/equipment/equipment.component';
-import { TeamsDialog } from '../features/components/teams-dialog/teams-dialog';
-import { EquipmentDialog } from '../features/components/equipment-dialog/equipment-dialog';
+import { TeamsDialogComponent } from '../features/components/teams-dialog/teams-dialog.component';
+import { EquipmentDialogComponent } from '../features/components/equipment-dialog/equipment-dialog.component';
 
 export enum appRoutes {
   HEROES = 'heroes',
@@ -24,9 +24,9 @@ export const routes: Routes = [
   { path: `${appRoutes.HERO_DIALOG}/:id`, component: HeroDialogComponent },
   { path: appRoutes.TEAMS, component: TeamsComponent, title: 'Teams' },
   { path: appRoutes.EQUIPMENT, component: EquipmentComponent, title: 'Equipment' },
-  { path: `${appRoutes.TEAM_DIALOG}/:id`, component: TeamsDialog },
-  { path: `${appRoutes.EQUIPMENT_DIALOG}/:id`, component: EquipmentDialog },
+  { path: `${appRoutes.TEAM_DIALOG}/:id`, component: TeamsDialogComponent },
+  { path: `${appRoutes.EQUIPMENT_DIALOG}/:id`, component: EquipmentDialogComponent },
   { path: appRoutes.HERO_DIALOG, component: HeroDialogComponent },
-  { path: appRoutes.TEAM_DIALOG, component: TeamsDialog },
-  { path: appRoutes.EQUIPMENT_DIALOG, component: EquipmentDialog },
+  { path: appRoutes.TEAM_DIALOG, component: TeamsDialogComponent },
+  { path: appRoutes.EQUIPMENT_DIALOG, component: EquipmentDialogComponent },
 ];

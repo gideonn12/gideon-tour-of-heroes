@@ -26,7 +26,7 @@ import { validateAlphanumeric } from '../../utils/validator';
   templateUrl: "./teams-dialog.html",
   styleUrl: "./teams-dialog.scss",
 })
-export class TeamsDialog implements OnInit {
+export class TeamsDialogComponent implements OnInit {
   originalTeam = signal<Team | null>(null);
   team = signal<Team | null>(null);
   allHeroes = signal<Hero[]>([]);
@@ -95,7 +95,7 @@ export class TeamsDialog implements OnInit {
     this.goBack();
   }
 
-  reset(): void  {
+  reset(): void {
     this.teamsService.resetTeam(this.id!);
     this.selectedName.set(this.originalTeam()!.name);
     this.selectedColor.set(this.originalTeam()!.color);

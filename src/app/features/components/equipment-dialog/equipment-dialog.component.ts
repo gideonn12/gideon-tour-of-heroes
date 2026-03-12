@@ -22,7 +22,7 @@ import { validateAlphanumeric } from '../../utils/validator';
   templateUrl: "./equipment-dialog.html",
   styleUrl: "./equipment-dialog.scss",
 })
-export class EquipmentDialog implements OnInit {
+export class EquipmentDialogComponent implements OnInit {
   visible = signal(true);
   equipment = signal<Equipment | null>(null);
   originalEquipment = signal<Equipment | null>(null);

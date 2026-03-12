@@ -34,7 +34,7 @@ export class TeamsComponent implements OnInit {
     }));
   });
 
-  onTeamClick(id: number) {
+  onTeamClick(id: number): void {
     this.router.navigate(["/", appRoutes.TEAM_DIALOG, id]);
   }
 

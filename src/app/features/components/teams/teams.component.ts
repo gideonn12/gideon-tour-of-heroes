@@ -38,7 +38,9 @@ export class TeamsComponent implements OnInit {
 
   filteredTeams = computed(() => {
     const query = this.searchQuery().toLowerCase().trim();
-    if (!query) return this.teamsWithHeroes();
+    if (!query) {
+      return this.teamsWithHeroes();
+    }
 
     return this.teamsWithHeroes().filter(team =>
         team.name.toLowerCase().includes(query) ||

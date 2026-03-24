@@ -9,10 +9,11 @@ import { Team } from '../../models/team/team';
 import { appRoutes } from '../../../app/app.routes';
 import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
+import {InputText} from "primeng/inputtext";
 
 @Component({
   selector: "app-equipment",
-  imports: [UpperCasePipe, Button],
+  imports: [UpperCasePipe, Button, InputText],
   providers: [EquipmentService, HeroService, TeamsService],
   templateUrl: "./equipment.component.html",
   styleUrl: "./equipment.component.scss",
@@ -21,6 +22,7 @@ export class EquipmentComponent implements OnInit {
   equipments = signal<Equipment[]>([]);
   heroes = signal<Hero[]>([]);
   teams = signal<Team[]>([]);
+  searchQuery = signal<String>("");
   private equipmentService: EquipmentService = inject(EquipmentService);
   private heroService: HeroService = inject(HeroService);
   private teamsService: TeamsService = inject(TeamsService);
@@ -40,6 +42,15 @@ export class EquipmentComponent implements OnInit {
       usedBy: this.heroes().find(hero => hero.equipmentIds.includes(equipment.id))?.name,
       color: this.teams().find(team => team.id === this.heroes().find(hero => hero.equipmentIds.includes(equipment.id))?.teamId)?.color ?? this.PINK,
     }));
+  });
+
+  filteredEquipments = computed(() => {
+    const query = this.searchQuery().toLowerCase();
+    if (!query) {
+      return this.equipmentWithUsage();
+    }
+
+    return this.equipmentWithUsage().filter(equipment => equipment.type.toLowerCase().includes(query.toLowerCase()));
   });
 
   onEquipmentClick(id: number) {

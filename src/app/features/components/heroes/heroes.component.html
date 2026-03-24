@@ -1,6 +1,6 @@
 <h2>My Heroes</h2>
 <div class="flex justify-content-center">
-    <input pInputText type="text" placeholder="Search teams or heroes" (input)="searchQuery.set($any($event.target).value)" class="heroesSearch mb-4 p-2 border-round-lg text-2xl"/>
+    <input pInputText type="text" placeholder="Search teams or heroes" (input)="searchQuery.set($any($event.target).value)" class="heroes-search mb-4 p-2 border-round-lg text-2xl"/>
 </div>
 <div class="w-35rem">
   <p-list-box [options]="filteredHeroes()" optionValue="id" (onChange)="onItemChange($event)">

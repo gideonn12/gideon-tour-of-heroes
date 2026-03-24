@@ -10,7 +10,7 @@ import { appRoutes } from '../../../app/app.routes';
 import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
 import { InputText } from "primeng/inputtext";
-import { filterList } from "../../utils/filterList";
+import { filterList } from "../../utils/filter-list";
 @Component({
   selector: "app-equipment",
   imports: [UpperCasePipe, Button, InputText],

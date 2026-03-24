@@ -8,7 +8,7 @@ import { HeroService } from '../../services/hero.service';
 import { Team } from '../../models/team/team';
 import { appRoutes } from '../../../app/app.routes';
 import { InputText } from "primeng/inputtext";
-import { filterList } from "../../utils/filterList";
+import { filterList } from "../../utils/filter-list";
 
 @Component({
   selector: 'app-dashboard',

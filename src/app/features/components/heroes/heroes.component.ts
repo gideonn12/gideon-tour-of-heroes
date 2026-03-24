@@ -12,7 +12,7 @@ import { Equipment } from "../../models/equipment/equipment";
 import { EquipmentService } from "../../services/equipment.service";
 import { TeamsService } from "../../services/teams.service";
 import { Button } from 'primeng/button';
-import {InputText} from "primeng/inputtext";
+import { InputText } from "primeng/inputtext";
 
 @Component({
   selector: 'app-heroes',

@@ -7,7 +7,7 @@ import { TeamsService } from "../../services/teams.service";
 import { appRoutes } from '../../../app/app.routes';
 import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
-import {InputText} from "primeng/inputtext";
+import { InputText } from "primeng/inputtext";
 
 @Component({
   selector: 'app-teams',

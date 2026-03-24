@@ -9,8 +9,8 @@ import { Team } from '../../models/team/team';
 import { appRoutes } from '../../../app/app.routes';
 import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
-import {InputText} from "primeng/inputtext";
-
+import { InputText } from "primeng/inputtext";
+import { filterList } from "../../utils/filterList";
 @Component({
   selector: "app-equipment",
   imports: [UpperCasePipe, Button, InputText],
@@ -22,7 +22,7 @@ export class EquipmentComponent implements OnInit {
   equipments = signal<Equipment[]>([]);
   heroes = signal<Hero[]>([]);
   teams = signal<Team[]>([]);
-  searchQuery = signal<String>("");
+  searchQuery = signal<string>("");
   private equipmentService: EquipmentService = inject(EquipmentService);
   private heroService: HeroService = inject(HeroService);
   private teamsService: TeamsService = inject(TeamsService);
@@ -44,14 +44,7 @@ export class EquipmentComponent implements OnInit {
     }));
   });
 
-  filteredEquipments = computed(() => {
-    const query = this.searchQuery().toLowerCase();
-    if (!query) {
-      return this.equipmentWithUsage();
-    }
-
-    return this.equipmentWithUsage().filter(equipment => equipment.type.toLowerCase().includes(query.toLowerCase()));
-  });
+  filteredEquipments = computed(() => filterList(this.equipmentWithUsage, this.searchQuery().toLowerCase(), "type"));
 
   onEquipmentClick(id: number) {
     this.router.navigate(["/", appRoutes.EQUIPMENT_DIALOG, id]);

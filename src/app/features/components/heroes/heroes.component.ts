@@ -12,10 +12,11 @@ import { Equipment } from "../../models/equipment/equipment";
 import { EquipmentService } from "../../services/equipment.service";
 import { TeamsService } from "../../services/teams.service";
 import { Button } from 'primeng/button';
+import {InputText} from "primeng/inputtext";
 
 @Component({
   selector: 'app-heroes',
-  imports: [FormsModule, Listbox, PrimeTemplate, NgStyle, Button],
+  imports: [FormsModule, Listbox, PrimeTemplate, NgStyle, Button, InputText],
   providers: [HeroService, TeamsService, EquipmentService],
   templateUrl: './heroes.component.html',
   styleUrls: ['./heroes.component.scss'],
@@ -24,6 +25,7 @@ export class HeroesComponent implements OnInit {
   heroes = signal<Hero[]>([]);
   teams = signal<Team[]>([]);
   equipments = signal<Equipment[]>([]);
+  searchQuery = signal<String>("");
   private router: Router = inject(Router);
   private heroService: HeroService = inject(HeroService);
   private equipmentService: EquipmentService = inject(EquipmentService);
@@ -50,6 +52,16 @@ export class HeroesComponent implements OnInit {
       teamColor: this.teams().find(team => team.id === hero.teamId)?.color,
       equipments: this.equipments().filter(equipment => hero.equipmentIds.includes(equipment.id)).map(equipment => equipment.icon),
     }));
+  });
+
+  filteredHeroes = computed(() => {
+    const query = this.searchQuery().trim().toLowerCase();
+    if (!query) {
+      return this.heroesWithTeamsEquipment();
+    }
+
+    return this.heroesWithTeamsEquipment().filter(hero =>
+      hero.name.toLowerCase().includes(query) || hero.teamName?.toLowerCase().includes(query))
   });
 
   addNewHero(): void {

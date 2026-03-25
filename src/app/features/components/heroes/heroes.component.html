@@ -1,6 +1,9 @@
 <h2>My Heroes</h2>
+<div class="flex justify-content-center">
+    <input pInputText type="text" placeholder="Search teams or heroes" (input)="searchQuery.set($any($event.target).value)" class="heroes-search mb-4 p-2 border-round-lg text-2xl"/>
+</div>
 <div class="w-35rem">
-  <p-list-box [options]="heroesWithTeamsEquipment()" optionValue="id" (onChange)="onItemChange($event)">
+  <p-list-box [options]="filteredHeroes()" optionValue="id" (onChange)="onItemChange($event)">
     <ng-template let-item pTemplate="item" class="hero-link">
       <div class="hero text-2xl cursor-pointer w-full flex align-items-center">
         <span class="badge flex justify-content-center align-items-center text-3xl w-3rem border-round flex-shrink-0">{{ item.id }}</span>

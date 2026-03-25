@@ -7,10 +7,11 @@ import { TeamsService } from "../../services/teams.service";
 import { appRoutes } from '../../../app/app.routes';
 import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
+import { InputText } from "primeng/inputtext";
 
 @Component({
   selector: 'app-teams',
-  imports: [UpperCasePipe, Button],
+  imports: [UpperCasePipe, Button, InputText],
   providers: [HeroService, TeamsService],
   templateUrl: './teams.component.html',
   styleUrl: './teams.component.scss',
@@ -18,6 +19,7 @@ import { Button } from 'primeng/button';
 export class TeamsComponent implements OnInit {
   teams = signal<Team[]>([]);
   heroes = signal<Hero[]>([]);
+  searchQuery = signal<string>('');
   private router: Router = inject(Router);
   private heroService: HeroService = inject(HeroService);
   private teamsService: TeamsService = inject(TeamsService);
@@ -32,6 +34,18 @@ export class TeamsComponent implements OnInit {
       ...team,
       heroes: this.heroes().filter(hero => team.heroIds.includes(hero.id))
     }));
+  });
+
+  filteredTeams = computed(() => {
+    const query = this.searchQuery().toLowerCase().trim();
+    if (!query) {
+      return this.teamsWithHeroes();
+    }
+
+    return this.teamsWithHeroes().filter(team =>
+        team.name.toLowerCase().includes(query) ||
+        team.heroes.some(hero => hero.name.toLowerCase().includes(query))
+    );
   });
 
   onTeamClick(id: number): void {

@@ -1,6 +1,9 @@
+<div class="flex justify-content-center">
+    <input pInputText type="text" placeholder="Search heroes/equipment" (input)="searchQuery.set($any($event.target).value)" class="dashboard-search p-3 w-20rem mb-3 border-round-lg text-2xl"/>
+</div>
 <p-card class="text-center text-3xl">Top Heroes</p-card>
 <div class="mt-5 flex flex-row justify-content-center gap-3">
-  @for (hero of heroes(); track hero.id) {
+  @for (hero of filteredHeroes(); track hero.id) {
     <p-button
       class="route border-round-xl w-10rem h-8rem flex justify-content-center"
       [label]="hero.name"
@@ -10,7 +13,7 @@
 <div class="mt-5">
   <p-card class="text-center text-3xl">Top Teams</p-card>
   <div class="mt-5 flex flex-row justify-content-center gap-3">
-    @for (team of teams(); track team.id) {
+    @for (team of filteredTeams(); track team.id) {
       <p-button
         class="route border-round-xl w-10rem h-8rem flex justify-content-center"
         [label]="team.name"
